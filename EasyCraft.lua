@@ -247,9 +247,9 @@ end
 EasyCraft.saveScene = function ()
     local entitiesString = ""
     for k, entity in pairs(EasyCraft.entities) do
-     --   entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(scene, entity).."\n\n\n"
-        entitiesString = ""..entitiesString.."\n".."       table.insert(sceneTable.entities, EasyCraft.makeAThing())\n"
-        print("string is"..entitiesString)
+        entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(scene, entity).."\n\n\n"
+       -- entitiesString = ""..entitiesString.."\n".."       table.insert(sceneTable.entities, EasyCraft.makeAThing())\n"
+     --   print("string is"..entitiesString)
     end
     --[[
     
