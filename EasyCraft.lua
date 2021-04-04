@@ -168,28 +168,28 @@ end]])
         local randomAmount = math.random(25)
         for i=1, randomAmount do
             local thing = EasyCraft.makeAThing("testThing"..tostring(i))
-            print("newThing name: "..thing.name)
-            for k,v in pairs(EasyCraft.entities) do
-                print(k, v)
-            end
-            print("thing by key: "..EasyCraft.entities[thing.name].name)
+           -- print("newThing name: "..thing.name)
+         --   for k,v in pairs(EasyCraft.entities) do
+           --     print(k, v)
+         --   end
+         --   print("thing by key: "..EasyCraft.entities[thing.name].name)
         end
+        --[[
         local entityCountEC = 0
         for k, v in pairs(EasyCraft.entities) do
             entityCountEC = entityCountEC + 1
         end
         print("entities in EasyCraft.entities = "..entityCountEC)
+          ]]
         EasyCraft.saveScene()
         local tab = readProjectTab("recreateScene")
         load(tab)()
-        local returnedTable = recreateScene()
-        
+        local returnedTable = recreateScene()        
         local entityCount = 0
         for k, v in pairs(returnedTable.entities) do
             entityCount = entityCount + 1
         end      
-        print("entities in returnedTable.entities = "..entityCount)
-        
+       -- print("entities in returnedTable.entities = "..entityCount)      
         _:expect(entityCountEC).is(randomAmount)
         EasyCraft.entities = preservedEntities
         end)  
