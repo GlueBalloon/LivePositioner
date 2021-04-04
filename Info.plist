@@ -19,7 +19,6 @@
 		<string>EasyCraft</string>
 		<string>CodeaUnit</string>
 		<string>recreateScene</string>
-		<string>recreateSceneTest</string>
 	</array>
 	<key>Dependencies</key>
 	<array/>

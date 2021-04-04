@@ -158,17 +158,27 @@ end]])
         local entity2 = returnedTable.entities[entity.name]
         entity.eulerAngles = entity.eulerAngles --adjusts eulerAngles a second time for first entity
         _:expect(EasyCraft.entitiesHaveSameBasicProperties(entity, entity2)).is(true)
-     --   saveProjectTab("recreateSceneTest", nil)
+        saveProjectTab("recreateSceneTest", nil)
     end)
 
+    
     _:test("saveScene() makes recreateScene() that returns right number of entities", function()
-        
+        local preservedEntities = EasyCraft.entities
         EasyCraft.entities = {}
-        
         local randomAmount = math.random(25)
         for i=1, randomAmount do
-            EasyCraft.makeAThing()
+            local thing = EasyCraft.makeAThing("testThing"..tostring(i))
+            print("newThing name: "..thing.name)
+            for k,v in pairs(EasyCraft.entities) do
+                print(k, v)
+            end
+            print("thing by key: "..EasyCraft.entities[thing.name].name)
         end
+        local entityCountEC = 0
+        for k, v in pairs(EasyCraft.entities) do
+            entityCountEC = entityCountEC + 1
+        end
+        print("entities in EasyCraft.entities = "..entityCountEC)
         EasyCraft.saveScene()
         local tab = readProjectTab("recreateScene")
         load(tab)()
@@ -178,8 +188,10 @@ end]])
         for k, v in pairs(returnedTable.entities) do
             entityCount = entityCount + 1
         end      
-        _:expect(entityCount).is(randomAmount)
+        print("entities in returnedTable.entities = "..entityCount)
         
+        _:expect(entityCountEC).is(randomAmount)
+        EasyCraft.entities = preservedEntities
         end)  
     end)
 end
@@ -189,14 +201,14 @@ EasyCraft.entities = {}
 
 EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotationVec3, scaleVec3)
     local newEntity = scene:entity()
-    newEntity.name = name or "entityMadeAt"..tostring(os.time())
+    newEntity.name = name or "entityMadeAt"..tostring(os.clock())
     newEntity.position = positionVec3 or newEntity.position
     newEntity.eulerAngles = rotationVec3 or newEntity.eulerAngles
     newEntity.scale = scaleVec3 or newEntity.scale
     newEntity.modelPack = modelPack or "Blocky_Characters"
     newEntity.modelName = modelName or "Adventurer"
     newEntity.model = craft.model(asset.builtin[newEntity.modelPack][newEntity.modelName])
-    EasyCraft.entities[newEntity.name] = entity
+    EasyCraft.entities[newEntity.name] = newEntity
     return newEntity
 end
 
@@ -235,7 +247,9 @@ end
 EasyCraft.saveScene = function ()
     local entitiesString = ""
     for k, entity in pairs(EasyCraft.entities) do
-        entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(scene, entity).."\n\n\n"
+     --   entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(scene, entity).."\n\n\n"
+        entitiesString = ""..entitiesString.."\n".."       table.insert(sceneTable.entities, EasyCraft.makeAThing())\n"
+        print("string is"..entitiesString)
     end
     --[[
     
@@ -247,6 +261,8 @@ EasyCraft.saveScene = function ()
     
       ]]
 
+    entitiesString = entitiesString.."\n--what the fucking hell Tyson\n"
+    
     local dataString = [[    
 function recreateScene()
     
