@@ -1,0 +1,25 @@
+{
+	"items" : 
+	[
+		{
+			"name" : "Blocks:Blank White",
+			"origin" : 
+			[
+				0,
+				0
+			],
+			"size" : 
+			[
+				128,
+				128
+			]
+		}
+	],
+	"mipmap_levels" : 4,
+	"size" : 
+	[
+		128,
+		128
+	],
+	"texturePath" : "/var/mobile/Containers/Data/Application/3ECAB153-0FE5-4166-AB94-42F03851E6D1/Documents/LivePositioner.codea/BlocksetAtlas.png"
+}
