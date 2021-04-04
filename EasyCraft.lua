@@ -126,21 +126,14 @@ end]])
     
     
     _:test("entity from table has right values", function()
-        function randomVec3()
-            local x, y, z
-            x = math.random(0, 99999999) * 0.00001
-            y = math.random(0, 99999999) * 0.00001
-            z = math.random(0, 99999999) * 0.00001
-            return vec3(x,y,z)
-        end
         local entity, name, modelPack, modelName, position, rotation, eScale, entityString
         name = "Test Entity"
-        position = randomVec3()
-        rotation = randomVec3()
-        eScale = randomVec3()
+        position = EasyCraft.randomVec3()
+        rotation = EasyCraft.randomVec3()
+        eScale = EasyCraft.randomVec3()
         modelPack = "Watercraft"
         modelName = "watercraftPack_003_obj"
-        entity = EasyCraft.makeAThing(name, modelPack, modelName, position, rotation, eScale) --changes eukerAngles once
+        entity = EasyCraft.makeAThing(name, modelPack, modelName, position, rotation, eScale) --changes eulerAngles once
         entityString = EasyCraft.stringForRecreatingEntity(entity)
         entityString = [[
         
@@ -167,7 +160,14 @@ end]])
         EasyCraft.entities = {}
         local randomAmount = math.random(25)
         for i=1, randomAmount do
-            local thing = EasyCraft.makeAThing("testThing"..tostring(i))
+            local modelPack, modelName, position, rotation, eScale
+            position = EasyCraft.randomVec3()
+            rotation = EasyCraft.randomVec3()
+            eScale = EasyCraft.randomVec3()
+            modelPack = "Watercraft"
+            modelName = "watercraftPack_003_obj"
+            EasyCraft.makeAThing("testThing"..tostring(i), modelPack, modelName, position, rotation, eScale) --changes eukerAngles once
+           -- local thing = EasyCraft.makeAThing("testThing"..tostring(i))
            -- print("newThing name: "..thing.name)
          --   for k,v in pairs(EasyCraft.entities) do
            --     print(k, v)
@@ -198,6 +198,14 @@ end
 
 EasyCraft = class()
 EasyCraft.entities = {}
+
+EasyCraft.randomVec3 = function()
+local x, y, z
+x = math.random(0, 99999999) * 0.00001
+y = math.random(0, 99999999) * 0.00001
+z = math.random(0, 99999999) * 0.00001
+return vec3(x,y,z)
+end
 
 EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotationVec3, scaleVec3)
     local newEntity = scene:entity()
