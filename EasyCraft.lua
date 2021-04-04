@@ -190,7 +190,7 @@ end]])
             entityCount = entityCount + 1
         end      
        -- print("entities in returnedTable.entities = "..entityCount)      
-        _:expect(entityCountEC).is(randomAmount)
+        _:expect(entityCount).is(randomAmount)
         EasyCraft.entities = preservedEntities
         end)  
     end)
@@ -247,7 +247,6 @@ end
 EasyCraft.saveScene = function ()
     local entitiesString = ""
     for k, entity in pairs(EasyCraft.entities) do
-        entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(scene, entity).."\n\n"..[[
         
         sceneTable.entities[newEntity.name] = newEntity
         
