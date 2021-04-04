@@ -247,6 +247,7 @@ end
 EasyCraft.saveScene = function ()
     local entitiesString = ""
     for k, entity in pairs(EasyCraft.entities) do
+        entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(entity).."\n\n"..[[
         
         sceneTable.entities[newEntity.name] = newEntity
         
