@@ -15,9 +15,9 @@ function setup()
     -- use scene to make a new entity
     sceneEntity = EasyCraft.makeAThing("startingThing")
     
-    entityNames = {}
+    entities = {}
     currentEntityIndex = 1
-    table.insert(entityNames, sceneEntity.name)
+    table.insert(entities, sceneEntity.name)
     
     modelSets = {}
     currentSetIndex = 1
@@ -52,7 +52,12 @@ function setup()
     space.liveSettings.scale = vec3(4.000000, 4.000000, 4.000000)
     ]]
     
-    EasyCraft.entities[entities[currentEntityIndex]]:add(craft.renderer, craft.model(modelSets[1][1]))
+   -- print(entities[currentEntityIndex])
+ --   print(EasyCraft.entities[entities[currentEntityIndex]])
+ --   print(EasyCraft.entities[entities[currentEntityIndex]].name)
+    local currentEntity = EasyCraft.entities[entities[currentEntityIndex]]
+    currentEntity:remove(craft.renderer)
+    currentEntity:add(craft.renderer, craft.model(modelSets[1][1]))
     
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1
@@ -163,10 +168,7 @@ function setup()
         LivePositioner:useStoredCameraPosition()
     else
         viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
-    end
-    
-    
-    
+    end  
 end
 
 function modelTableFromPack(assetPack)
