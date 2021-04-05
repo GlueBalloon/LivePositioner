@@ -336,7 +336,7 @@ end]]
     
 end
 
-EasyCraft.saveSettings = function(subject)
+EasyCraft.saveCameraPlacement = function(subject)
     --[[
     local rySignRememberer = 1
     local adjustedRy = viewer.ry

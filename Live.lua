@@ -27,23 +27,34 @@ end
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
 function LivePositioner:setNonPositioningParameters()
     parameter.action("Save Scene", 
-        function() EasyCraft.saveScene() end)
+        function() 
+        EasyCraft.saveScene() 
+        EasyCraft.saveCameraPlacement()
+    end)
   --  parameter.watch("subjectPosition")
   --  parameter.watch("subjectEulers")
   --  parameter.watch("subjectScale")
     parameter.action("Load Saved Scene",
     function() 
+
         entities = {}
         currentEntityIndex = 1
         currentSetIndex = 1
         currentModelIndex = 1
+    
         for k, v in pairs(EasyCraft.entities) do
             v:destroy()
             EasyCraft.entities[k] = nil
         end
+
         if easyCraftRecreate then
             easyCraftRecreate()
         end
+        
+        if LivePositioner.useStoredCameraPosition then
+            LivePositioner:useStoredCameraPosition()
+        end
+        
     end)
 end
 
