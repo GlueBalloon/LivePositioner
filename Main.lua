@@ -62,6 +62,9 @@ function setup()
     currentEntity:remove(craft.renderer)
     currentEntity:add(craft.renderer, craft.model(getAssetFor(1, 1)))
     
+    parameter.watch("Welcome")
+    Welcome = "Use the controls below to make a custom scene with the built-in models."
+    
     parameter.watch("Using_Model")
     
     parameter.action("Entity: Use Next Model", function()
@@ -92,9 +95,9 @@ function setup()
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.watch("Model_Pack")
+    parameter.watch("Pack")
     
-    parameter.action("Change to Next Model Pack", function()
+    parameter.action("Use Next Pack", function()
         currentSetIndex = currentSetIndex + 1
         if currentSetIndex > #modelSets then
             currentSetIndex = 1
@@ -112,7 +115,7 @@ function setup()
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.action("Change to Previous Model Pack", function()
+    parameter.action("Use Previous Pack", function()
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
@@ -130,19 +133,8 @@ function setup()
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
     end)
     
-    parameter.action("New Entity", function()
-        local idNumber = math.random(1,99999999)
-        local newThing = EasyCraft.makeAThing(idNumber)
-        table.insert(entities, newThing.name)
-        currentEntityIndex = #entities
-        local currentE = getCurrentEntity()
-        currentE:remove(craft.renderer)
-        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
-        currentE.modelPack = modelSetNames[currentSetIndex]
-        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
-        print(EasyCraft.entities[entities[currentEntityIndex]].position)
-        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
-    end)
+    parameter.watch("Selecting")
+    Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
     
     parameter.action("Select Next Entity", function()
         if currentEntityIndex == #entities then
@@ -164,6 +156,23 @@ function setup()
     
     parameter.boolean("ShowBounds", false)
 
+    
+    parameter.watch("Adding")
+    Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
+    parameter.action("New Entity", function()
+        local idNumber = math.random(1,99999999)
+        local newThing = EasyCraft.makeAThing(idNumber)
+        table.insert(entities, newThing.name)
+        currentEntityIndex = #entities
+        local currentE = getCurrentEntity()
+        currentE:remove(craft.renderer)
+        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
+        currentE.modelPack = modelSetNames[currentSetIndex]
+        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
+        print(EasyCraft.entities[entities[currentEntityIndex]].position)
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
+    end)
+    
     -- Initialize a LivePositioner with the entity to be positioned
     livePositioner = LivePositioner(sceneEntity)
     ptables = livePositioner:rangeTable(0, 0, 0, 500)
@@ -240,8 +249,8 @@ function draw()
     -- Draw the scene
     scene:draw()
     
-    Using_Model = modelSets[currentSetIndex][currentModelIndex]
-    Model_Pack = modelSetNames[currentSetIndex]
+    Model = modelSets[currentSetIndex][currentModelIndex]
+    Pack = modelSetNames[currentSetIndex]
     
     --[[
     pushMatrix()
