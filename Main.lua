@@ -183,7 +183,7 @@ function setup()
     
     
     if LivePositioner.useStoredCameraPosition then
-        LivePositioner:useStoredCameraPosition()
+        livePositioner:useStoredCameraPosition()
     else
         viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
     end  

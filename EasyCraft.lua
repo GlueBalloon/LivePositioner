@@ -336,7 +336,7 @@ end]]
     
 end
 
-EasyCraft.saveCameraPlacement = function(subject)
+EasyCraft.saveCameraPlacement = function()
     --[[
     local rySignRememberer = 1
     local adjustedRy = viewer.ry
@@ -357,7 +357,7 @@ EasyCraft.saveCameraPlacement = function(subject)
         return(a)
     end
     adjustedRy = reduce(viewer.ry)
-    local dataString = "--[[\n\tsubject.position = vec3"..tostring(subject.position).."\n\tsubject.eulerAngles = vec3"..tostring(subject.eulerAngles).."\n\tsubject.scale = vec3"..tostring(subject.scale).."\n".."]]\n"..[[
+    local dataString = [[
     function LivePositioner:useStoredCameraPosition(target)
         local targetToUse = target or vec3(0,0,0)
         -- parameters after viewer are target position, initial distance, min dist, max dist

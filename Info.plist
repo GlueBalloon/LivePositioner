@@ -11,7 +11,7 @@
 	<key>Buffer Order</key>
 	<array>
 		<string>Main</string>
-		<string>Live</string>
+		<string>LivePositioner</string>
 		<string>PositioningSettings</string>
 		<string>SubjectSettings</string>
 		<string>OrbitViewer</string>

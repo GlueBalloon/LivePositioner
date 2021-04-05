@@ -9,7 +9,7 @@ LivePositioner = class()
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
 function LivePositioner:init(thing, pTable, eTable, sTable)
     self.subject = thing
-    local position = pTable or self:rangeTable(0.5,0.5,10.5,150)
+    local position = pTable or self:rangeTable(0.5,0.5,10.5,1000)
     local eulers = eTable or self:rangeTable(0,0,0,400)
     local scales = sTable or self:rangeTable(1,1,1,150)
     self:setNonPositioningParameters()
@@ -17,6 +17,7 @@ function LivePositioner:init(thing, pTable, eTable, sTable)
 end
 
 function LivePositioner:changeSubject(thisSubject) 
+    print(thisSubject)
     self.subject = thisSubject
     subjectScaleAll = 1
     subjectX, subjectY, subjectZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
@@ -33,9 +34,7 @@ function LivePositioner:setNonPositioningParameters()
         EasyCraft.saveScene() 
         EasyCraft.saveCameraPlacement()
     end)
-  --  parameter.watch("subjectPosition")
-  --  parameter.watch("subjectEulers")
-  --  parameter.watch("subjectScale")
+
     parameter.action("Load Saved Scene",
     function() 
 
@@ -43,15 +42,33 @@ function LivePositioner:setNonPositioningParameters()
         currentEntityIndex = 1
         currentSetIndex = 1
         currentModelIndex = 1
-    
-        for k, v in pairs(EasyCraft.entities) do
-            v:destroy()
-        end
         
+        local destroyUs = {}
+        for k, v in pairs(EasyCraft.entities) do
+            destroyUs[k] = v
+        end      
         -- EasyCraft.entities = {}
 
+        local newSceneParts
         if easyCraftRecreate then
-            easyCraftRecreate()
+            newSceneParts = easyCraftRecreate()
+        end
+        --need an entity to become the new subject, so grab any entity from recreation
+        --this is super kludgey but I can't think how else to grab a single value from a hash
+        
+        if not newSceneParts then return end
+        local arbitraryEntity
+        for k, v in pairs(newSceneParts.entities) do
+            arbitraryEntity = v
+            break
+        end
+        if arbitraryEntity then
+            print(arbitraryEntity)
+            LivePositioner:changeSubject(EasyCraft.entities[arbitraryEntity.name])
+        end
+        
+        for k, v in pairs(destroyUs) do
+            v:destroy()
         end
 --[[
         if LivePositioner.useStoredCameraPosition then
