@@ -1,3 +1,4 @@
+
 -- LivePositioner by ubergoober
 
 --bugs: bounds don't scale
@@ -128,7 +129,8 @@ function setup()
         local newThing = EasyCraft.makeAThing(idNumber)
         table.insert(entities, newThing.name)
         currentEntityIndex = #entities
-        EasyCraft.entities[entities[currentEntityIndex]]:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
+        getCurrentEntity():remove(craft.renderer)
+        getCurrentEntity():add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
         newThing.modelPack = modelSets[currentSetIndex]
         newThing.modelName = modelSets[currentSetIndex][currentModelIndex]
         print(EasyCraft.entities[entities[currentEntityIndex]].position)
@@ -169,6 +171,10 @@ function setup()
     else
         viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
     end  
+end
+
+function getCurrentEntity()
+    return EasyCraft.entities[entities[currentEntityIndex]]
 end
 
 function modelTableFromPack(assetPack)
