@@ -33,7 +33,17 @@ function LivePositioner:setNonPositioningParameters()
   --  parameter.watch("subjectScale")
     parameter.action("Load Saved Scene",
     function() 
-        recreateScene() 
+        entities = {}
+        currentEntityIndex = 1
+        currentSetIndex = 1
+        currentModelIndex = 1
+        for k, v in pairs(EasyCraft.entities) do
+            v:destroy()
+            EasyCraft.entities[k] = nil
+        end
+        if easyCraftRecreate then
+            easyCraftRecreate()
+        end
     end)
 end
 
