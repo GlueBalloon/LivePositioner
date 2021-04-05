@@ -9,9 +9,9 @@ LivePositioner = class()
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
 function LivePositioner:init(thing, pTable, eTable, sTable)
     self.subject = thing
-    local position = pTable or self:rangeTable(0.5,0.5,10.5,40)
+    local position = pTable or self:rangeTable(0.5,0.5,10.5,150)
     local eulers = eTable or self:rangeTable(0,0,0,400)
-    local scales = sTable or self:rangeTable(1.5,1.5,1.5,40)
+    local scales = sTable or self:rangeTable(1,1,1,150)
     self:setNonPositioningParameters()
     self:define(self.subject, position, eulers, scales)
 end
@@ -26,6 +26,8 @@ end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
 function LivePositioner:setNonPositioningParameters()
+    parameter.watch("Storing")
+    Storing = "Only one save/load slot, so be careful. If you want to keep your current save forever, copy the contents of the 'recreateScene' tab to another location."
     parameter.action("Save Scene", 
         function() 
         EasyCraft.saveScene() 
@@ -44,22 +46,25 @@ function LivePositioner:setNonPositioningParameters()
     
         for k, v in pairs(EasyCraft.entities) do
             v:destroy()
-            EasyCraft.entities[k] = nil
         end
+        
+        -- EasyCraft.entities = {}
 
         if easyCraftRecreate then
             easyCraftRecreate()
         end
-        
+--[[
         if LivePositioner.useStoredCameraPosition then
             LivePositioner:useStoredCameraPosition()
         end
-        
+        ]]
     end)
 end
 
 -- defineLiveParameters(...) sets up the parameter controls
 function LivePositioner:define(thing, pTable, eTable, sTable)
+    parameter.watch("Positioning")
+    Positioning = "Use these sliders to position, rotate, and scale the current selection"
     if thing then
         self.subject = thing
     end
@@ -132,15 +137,15 @@ end
 
 function LivePositioner:setScalesAndRanges(rangeTable)
     parameter.number("subjectScaleX",
-    rangeTable.x - rangeTable.range,
+    0,
     rangeTable.x + rangeTable.range,
     rangeTable.x)
     parameter.number("subjectScaleY",
-    rangeTable.y - rangeTable.range,
+    0,
     rangeTable.y + rangeTable.range,
     rangeTable.y)
     parameter.number("subjectScaleZ",
-    rangeTable.z - rangeTable.range,
+    0,
     rangeTable.z + rangeTable.range,
     rangeTable.z)
     if rangeTable.scaleAll then

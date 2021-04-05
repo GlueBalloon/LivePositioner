@@ -6,7 +6,7 @@
     function LivePositioner:useStoredCameraPosition(target)
         local targetToUse = target or vec3(0,0,0)
         -- parameters after viewer are target position, initial distance, min dist, max dist
-        viewer = scene.camera:add(OrbitViewer, targetToUse, 30, 10, 300)
+        viewer = scene.camera:add(OrbitViewer, targetToUse, 30, 10, 1000)
         
         --rx and ry control camera placement, though not like you'd think
         --it's all relative to the target
