@@ -242,6 +242,15 @@ return [[
     newEntity.name = "]]..entity.name..[["]]
 end
 
+EasyCraft.stringForEasyCraftRecreatingEntity = function(entity)
+    --  print(entity.name)
+    return [[
+    
+    EasyCraft.makeAThing("]]..entity.modelName..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)[[)
+    
+    ]]
+end
+
 EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     local sameName, samePosition, sameRotation, sameScale, samePackName, sameModelName
     sameName = entity1.name == entity2.name
@@ -267,10 +276,20 @@ end
 
 EasyCraft.saveScene = function ()
     local entitiesString = ""
+    local easyCraftEntitiesString = ""
+    
     for k, entity in pairs(EasyCraft.entities) do
         entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(entity).."\n\n"..[[
         
         sceneTable.entities[newEntity.name] = newEntity
+        local newModel = craft.model(asset.builtin["]]..entity.modelPack..[["]["]]..entity.modelName..[["])
+        newEntity:add(craft.renderer, newModel)
+        
+        ]]
+        easyCraftEntitiesString = easyCraftEntitiesString..EasyCraft.stringForEasyCraftRecreatingEntity(entity).."\n\n"..[[
+        
+        sceneTable.entities[newEntity.name] = newEntity
+        table.insert(entities, newEntity.name)
         
         ]]
        -- entitiesString = ""..entitiesString.."\n".."       table.insert(sceneTable.entities, EasyCraft.makeAThing())\n"
@@ -302,6 +321,23 @@ function recreateScene()
     
 end]]
     saveProjectTab("recreateScene", dataString)
+    
+    local easyCraftDataString = [[
+    function easyCraftRecreate()
+        
+        local scene = scene
+        if not scene then
+            scene = craft.scene()
+        end
+        
+        local sceneTable = {}
+        sceneTable.entities = {}
+        ]].."\n"..easyCraftEntitiesString..[[
+        
+        return sceneTable
+        
+    end]]
+    
 end
 
 EasyCraft.saveSettings = function(subject)

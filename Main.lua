@@ -163,7 +163,7 @@ function setup()
     end)
     
     parameter.boolean("ShowBounds", false)
-    parameter.watch("viewer.ry")
+
     -- Initialize a LivePositioner with the entity to be positioned
     livePositioner = LivePositioner(sceneEntity)
     ptables = livePositioner:rangeTable(0, 0, 0, 500)

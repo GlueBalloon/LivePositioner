@@ -31,9 +31,10 @@ function LivePositioner:setNonPositioningParameters()
   --  parameter.watch("subjectPosition")
   --  parameter.watch("subjectEulers")
   --  parameter.watch("subjectScale")
-    parameter.watch("subjectAll")
     parameter.action("Load Saved Scene",
-    function() recreateScene() end)
+    function() 
+        recreateScene() 
+    end)
 end
 
 -- defineLiveParameters(...) sets up the parameter controls
