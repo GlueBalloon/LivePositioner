@@ -33,6 +33,7 @@ function setup()
     local racing = modelTableFromPack(asset.builtin.RacingKit)
     local watercraft = modelTableFromPack(asset.builtin.Watercraft)
     modelSets = {characters, nature, castles, space, primitive, racing, watercraft}
+    modelSetNames = {"Blocky_Characters", "Nature", "CastleKit", "SpaceKit", "Primitives", "RacingKit", "Watercraft"}
     
     --[[
     characters.liveSettings = {}
@@ -56,9 +57,12 @@ function setup()
    -- print(entities[currentEntityIndex])
  --   print(EasyCraft.entities[entities[currentEntityIndex]])
  --   print(EasyCraft.entities[entities[currentEntityIndex]].name)
+    
+    print(modelSets[1][1])
+    
     local currentEntity = EasyCraft.entities[entities[currentEntityIndex]]
     currentEntity:remove(craft.renderer)
-    currentEntity:add(craft.renderer, craft.model(modelSets[1][1]))
+    currentEntity:add(craft.renderer, craft.model(asset.builtin[modelSetNames[1]][modelSets[1][1]]))
     
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1
@@ -178,16 +182,22 @@ function getCurrentEntity()
     return EasyCraft.entities[entities[currentEntityIndex]]
 end
 
+function getAssetFor(packIndex, nameIndex)
+    
+end
+
+function filenameFromModel(model)
+    local vs = tostring(model)
+    local endIndex = string.find(vs, "path:")
+    return string.sub(vs, 12, endIndex - 3) -- 12 removes "Asset Key:", -3 removes " ("
+end
+
 function modelTableFromPack(assetPack)
     local modelTable = {}
     for k,v in pairs(assetPack.all) do
         if v.type == MODELS then
-            print(tostring(k))
-            local vs = tostring(v)
-            local endIndex = string.find(vs, " (path:")
-            vs = string.sub(vs, 12, endIndex -1)
-            print(vs)
-            table.insert(modelTable, v)
+            local vs = filenameFromModel(v)
+            table.insert(modelTable, vs)
         end
     end
     return modelTable
