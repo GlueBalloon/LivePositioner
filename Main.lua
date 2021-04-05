@@ -65,7 +65,7 @@ function setup()
     parameter.watch("Welcome")
     Welcome = "Use the controls below to make a custom scene with the built-in models."
     
-    parameter.watch("Using_Model")
+    parameter.watch("Model")
     
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1

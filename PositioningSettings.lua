@@ -1,8 +1,3 @@
---[[
-	subject.position = vec3(0.000000, 0.000000, 0.000000)
-	subject.eulerAngles = vec3(0.000000, -0.000000, 0.000000)
-	subject.scale = vec3(1.000000, 1.000000, 1.000000)
-]]
     function LivePositioner:useStoredCameraPosition(target)
         local targetToUse = target or vec3(0,0,0)
         -- parameters after viewer are target position, initial distance, min dist, max dist
@@ -14,8 +9,8 @@
         --negative ry rotates you counter-clockwise around the target, so -180 is also completely behind
         --positive rx moves you above the target, with 90 or more being directly overhead
         --negative rx moves you below the target, with -90 or more being directly under
-        viewer.ry = -125.67038055546
-        viewer.rx = 43.688796632105
-        viewer.zoom = 32.966762174604
-        viewer.target = target or vec3(0.045085, 7.694529, 0.615834)
+        viewer.ry = 133.9191835363
+        viewer.rx = 38.451656352843
+        viewer.zoom = 631.77888613305
+        viewer.target = target or vec3(-17.588991, -5.361362, -61.392605)
 end

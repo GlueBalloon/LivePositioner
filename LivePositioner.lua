@@ -56,6 +56,7 @@ function LivePositioner:setNonPositioningParameters()
         --need an entity to become the new subject, so grab any entity from recreation
         --this is super kludgey but I can't think how else to grab a single value from a hash
         
+        --[[
         if not newSceneParts then return end
         local arbitraryEntity
         for k, v in pairs(newSceneParts.entities) do
@@ -70,6 +71,7 @@ function LivePositioner:setNonPositioningParameters()
         for k, v in pairs(destroyUs) do
             v:destroy()
         end
+        ]]
 --[[
         if LivePositioner.useStoredCameraPosition then
             LivePositioner:useStoredCameraPosition()
