@@ -272,8 +272,6 @@ EasyCraft.saveScene = function ()
     end
     
       ]]
-
-    entitiesString = entitiesString.."\n--what the fucking hell Tyson\n"
     
     local dataString = [[    
 function recreateScene()
@@ -287,9 +285,6 @@ function recreateScene()
     sceneTable.entities = {}
     ]].."\n"..entitiesString..[[
     
-    
-   -- sceneTable.entities[newEntity.name] = newEntity   
-    return sceneTable
     
 end]]
     saveProjectTab("recreateScene", dataString)
