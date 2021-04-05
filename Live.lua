@@ -25,8 +25,8 @@ end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
 function LivePositioner:setNonPositioningParameters()
-    parameter.action("save positioning settings", 
-        function() EasyCraft.saveSettings(self.subject) end)
+    parameter.action("Save Scene", 
+        function() EasyCraft.saveScene() end)
   --  parameter.watch("subjectPosition")
   --  parameter.watch("subjectEulers")
   --  parameter.watch("subjectScale")
