@@ -129,10 +129,11 @@ function setup()
         local newThing = EasyCraft.makeAThing(idNumber)
         table.insert(entities, newThing.name)
         currentEntityIndex = #entities
-        getCurrentEntity():remove(craft.renderer)
-        getCurrentEntity():add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
-        newThing.modelPack = modelSets[currentSetIndex]
-        newThing.modelName = modelSets[currentSetIndex][currentModelIndex]
+        local currentE = getCurrentEntity()
+        currentE:remove(craft.renderer)
+        currentE:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
+        currentE.modelPack = modelSets[currentSetIndex]
+        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
         print(EasyCraft.entities[entities[currentEntityIndex]].position)
         livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
