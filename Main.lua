@@ -63,6 +63,8 @@ function setup()
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
+        thisEntity.modelPack = modelSets[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
     
@@ -75,6 +77,8 @@ function setup()
             currentModelIndex = #modelSets[currentSetIndex]
         end
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
+        thisEntity.modelPack = modelSets[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
     
@@ -91,6 +95,8 @@ function setup()
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
+        thisEntity.modelPack = modelSets[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
     
@@ -108,12 +114,18 @@ function setup()
         --     livePositioner:useTablesIn(modelSets[currentSetIndex].liveSettings)
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
         thisEntity:add(craft.renderer, newModel)
+        thisEntity.modelPack = modelSets[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
     end)
     
     parameter.action("New Entity", function()
-        table.insert(entities, scene:entity())
+        local idNumber = math.random(1,99999999)
+        local newThing = EasyCraft.makeAThing(idNumber)
+        table.insert(entities, newThing)
         currentEntityIndex = #entities
         entities[currentEntityIndex]:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
+        newThing.modelPack = modelSets[currentSetIndex]
+        newThing.modelName = modelSets[currentSetIndex][currentModelIndex]
         print(entities[currentEntityIndex].position)
         livePositioner:changeSubject(entities[currentEntityIndex])
     end)
