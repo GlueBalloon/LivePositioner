@@ -243,12 +243,8 @@ return [[
 end
 
 EasyCraft.stringForEasyCraftRecreatingEntity = function(entity)
-    --  print(entity.name)
-    return [[
-    
-    EasyCraft.makeAThing("]]..entity.modelName..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)[[)
-    
-    ]]
+    return [[   
+    local newEntity = EasyCraft.makeAThing("]]..entity.name..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)..[[) ]]
 end
 
 EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
@@ -281,17 +277,15 @@ EasyCraft.saveScene = function ()
     for k, entity in pairs(EasyCraft.entities) do
         entitiesString = entitiesString..EasyCraft.stringForRecreatingEntity(entity).."\n\n"..[[
         
-        sceneTable.entities[newEntity.name] = newEntity
-        local newModel = craft.model(asset.builtin["]]..entity.modelPack..[["]["]]..entity.modelName..[["])
-        newEntity:add(craft.renderer, newModel)
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["]]..entity.modelPack..[["]["]]..entity.modelName..[["])
+    newEntity:add(craft.renderer, newModel)
         
         ]]
-        easyCraftEntitiesString = easyCraftEntitiesString..EasyCraft.stringForEasyCraftRecreatingEntity(entity).."\n\n"..[[
-        
-        sceneTable.entities[newEntity.name] = newEntity
-        table.insert(entities, newEntity.name)
-        
-        ]]
+        easyCraftEntitiesString = easyCraftEntitiesString..EasyCraft.stringForEasyCraftRecreatingEntity(entity)..[[       
+    sceneTable.entities[newEntity.name] = newEntity
+    table.insert(entities, newEntity.name)
+                ]]
        -- entitiesString = ""..entitiesString.."\n".."       table.insert(sceneTable.entities, EasyCraft.makeAThing())\n"
      --   print("string is"..entitiesString)
     end
@@ -317,26 +311,28 @@ function recreateScene()
     sceneTable.entities = {}
     ]].."\n"..entitiesString..[[
     
-        return sceneTable
+    return sceneTable
     
 end]]
     saveProjectTab("recreateScene", dataString)
     
     local easyCraftDataString = [[
-    function easyCraftRecreate()
+function easyCraftRecreate()
         
-        local scene = scene
-        if not scene then
-            scene = craft.scene()
-        end
+    local scene = scene
+    if not scene then
+        scene = craft.scene()
+    end
         
-        local sceneTable = {}
-        sceneTable.entities = {}
-        ]].."\n"..easyCraftEntitiesString..[[
+    local sceneTable = {}
+    sceneTable.entities = {}
+    ]]..easyCraftEntitiesString..[[
         
-        return sceneTable
+    return sceneTable
         
-    end]]
+end]]
+    
+    saveProjectTab("easyCraftRecreate", easyCraftDataString)
     
 end
 
