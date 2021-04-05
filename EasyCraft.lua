@@ -230,7 +230,7 @@ end
 
 
 EasyCraft.stringForRecreatingEntity = function(entity)
-    print(entity.name)
+  --  print(entity.name)
 return [[
     
     local newEntity = scene:entity()

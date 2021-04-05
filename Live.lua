@@ -18,6 +18,7 @@ end
 
 function LivePositioner:changeSubject(thisSubject) 
     self.subject = thisSubject
+    subjectScaleAll = 1
     subjectX, subjectY, subjectZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
     subjectEulerX, subjectEulerY, subjectEulerZ = thisSubject.eulerAngles.x, thisSubject.eulerAngles.y, thisSubject.eulerAngles.z
     subjectScaleX, subjectScaleY, subjectScaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
@@ -108,21 +109,21 @@ function LivePositioner:setEulersAndRanges(rangeTable)
 end
 
 function LivePositioner:setScalesAndRanges(rangeTable)
-    parameter.number("subjectScaleX", 
-    1,
-    rangeTable.range,
-    1)
-    parameter.number("subjectScaleY", 
-    1,
-    rangeTable.range,
-    1)
-    parameter.number("subjectScaleZ", 
-    1,
-    rangeTable.range,
-    1)
+    parameter.number("subjectScaleX",
+    rangeTable.x - rangeTable.range,
+    rangeTable.x + rangeTable.range,
+    rangeTable.x)
+    parameter.number("subjectScaleY",
+    rangeTable.y - rangeTable.range,
+    rangeTable.y + rangeTable.range,
+    rangeTable.y)
+    parameter.number("subjectScaleZ",
+    rangeTable.z - rangeTable.range,
+    rangeTable.z + rangeTable.range,
+    rangeTable.z)
     if rangeTable.scaleAll then
         parameter.number("subjectScaleAll",
-        1,
+        0,
         rangeTable.scaleRange,
         1
         )
@@ -140,14 +141,19 @@ function LivePositioner:update()
         subjectEulers = self.subject.eulerAngles
     end
     if subjectScaleX then
-        if subjectScaleAll == nil then
-            self.subject.scale = vec3(subjectScaleX, subjectScaleY, subjectScaleZ)
+        local multiplier = 1
+        if subjectScaleAll then
+            multiplier = subjectScaleAll
         end
+        self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
+        subjectScale = self.subject.scale
     end
+    --[[
     if subjectScaleAll then
         local computedX, computedY, computedZ = subjectScaleX * subjectScaleAll, subjectScaleY * subjectScaleAll, subjectScaleZ * subjectScaleAll
-        self.subject.scale = vec3(computedX, computedY, computedZ)
+     --   self.subject.scale = vec3(computedX, computedY, computedZ)
         subjectAllScaled = self.subject.scale
     end
+    ]]
 end
 
