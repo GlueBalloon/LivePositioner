@@ -180,8 +180,13 @@ end
 
 function modelTableFromPack(assetPack)
     local modelTable = {}
-    for _,v in pairs(assetPack.all) do
+    for k,v in pairs(assetPack.all) do
         if v.type == MODELS then
+            print(tostring(k))
+            local vs = tostring(v)
+            local endIndex = string.find(vs, " (path:")
+            vs = string.sub(vs, 12, endIndex -1)
+            print(vs)
             table.insert(modelTable, v)
         end
     end
