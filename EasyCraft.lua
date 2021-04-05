@@ -248,7 +248,7 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     samePosition = entity1.position == entity2.position
     sameRotation = entity1.eulerAngles == entity2.eulerAngles
     sameScale = entity1.scale == entity2.scale
-    samePackName = entity1.packName == entity2.packName
+    samePackName = entity1.modelPack == entity2.modelPack
     sameModelName = entity1.modelName == entity2.modelName
     print(entity1.name, entity2.name)
     print(sameName)
@@ -258,7 +258,7 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     print(sameRotation)
     print(entity1.scale, entity2.scale)
     print(sameScale)
-    print(entity1.packName, entity2.packName)
+    print(entity1.modelPack, entity2.modelPack)
     print(samePackName)
     print(entity1.modelName, entity2.modelName)
     print(sameModelName)
