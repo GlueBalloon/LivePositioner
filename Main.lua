@@ -58,11 +58,9 @@ function setup()
  --   print(EasyCraft.entities[entities[currentEntityIndex]])
  --   print(EasyCraft.entities[entities[currentEntityIndex]].name)
     
-    print(modelSets[1][1])
-    
     local currentEntity = EasyCraft.entities[entities[currentEntityIndex]]
     currentEntity:remove(craft.renderer)
-    currentEntity:add(craft.renderer, craft.model(asset.builtin[modelSetNames[1]][modelSets[1][1]]))
+    currentEntity:add(craft.renderer, craft.model(getAssetFor(1, 1)))
     
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1
@@ -183,7 +181,7 @@ function getCurrentEntity()
 end
 
 function getAssetFor(packIndex, nameIndex)
-    
+    return asset.builtin[modelSetNames[packIndex]][modelSets[packIndex][nameIndex]]
 end
 
 function filenameFromModel(model)
