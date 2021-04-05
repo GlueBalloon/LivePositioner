@@ -62,6 +62,8 @@ function setup()
     currentEntity:remove(craft.renderer)
     currentEntity:add(craft.renderer, craft.model(getAssetFor(1, 1)))
     
+    parameter.watch("Using_Model")
+    
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1
         if currentModelIndex > #modelSets[currentSetIndex] then
@@ -89,6 +91,8 @@ function setup()
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
+    
+    parameter.watch("Model_Pack")
     
     parameter.action("Change to Next Model Pack", function()
         currentSetIndex = currentSetIndex + 1
@@ -218,7 +222,7 @@ function update(dt)
     -- LivePositioner stuff:
     -- Update the LivePositioner
     livePositioner:update()
-    
+
     if ShowBounds then -- bounds don't scale
         -- for k,v in pairs(modelSets[currentSetIndex]) do
         local b = EasyCraft.entities[entities[currentEntityIndex]]:get(craft.renderer).model.bounds
@@ -235,6 +239,9 @@ function draw()
     
     -- Draw the scene
     scene:draw()
+    
+    Using_Model = modelSets[currentSetIndex][currentModelIndex]
+    Model_Pack = modelSetNames[currentSetIndex]
     
     --[[
     pushMatrix()

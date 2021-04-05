@@ -142,7 +142,7 @@ function LivePositioner:update()
     end
     if subjectScaleX then
         local multiplier = 1
-        if subjectScaleAll then
+        if subjectScaleAll and subjectScaleAll > 0 then
             multiplier = subjectScaleAll
         end
         self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
