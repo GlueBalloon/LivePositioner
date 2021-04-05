@@ -70,8 +70,8 @@ function setup()
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
-        local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
-        thisEntity.modelPack = modelSets[currentSetIndex]
+        local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
@@ -84,8 +84,8 @@ function setup()
         if currentModelIndex == 0 then
             currentModelIndex = #modelSets[currentSetIndex]
         end
-        local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
-        thisEntity.modelPack = modelSets[currentSetIndex]
+        local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
@@ -102,8 +102,8 @@ function setup()
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
-        local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
-        thisEntity.modelPack = modelSets[currentSetIndex]
+        local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
         thisEntity:add(craft.renderer, newModel)
     end)
@@ -120,9 +120,9 @@ function setup()
             currentModelIndex = 1
         end
         --     livePositioner:useTablesIn(modelSets[currentSetIndex].liveSettings)
-        local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
+        local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
         thisEntity:add(craft.renderer, newModel)
-        thisEntity.modelPack = modelSets[currentSetIndex]
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
     end)
     
@@ -133,8 +133,8 @@ function setup()
         currentEntityIndex = #entities
         local currentE = getCurrentEntity()
         currentE:remove(craft.renderer)
-        currentE:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
-        currentE.modelPack = modelSets[currentSetIndex]
+        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
+        currentE.modelPack = modelSetNames[currentSetIndex]
         currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
         print(EasyCraft.entities[entities[currentEntityIndex]].position)
         livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])

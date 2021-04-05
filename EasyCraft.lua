@@ -214,7 +214,7 @@ EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotati
     newEntity.eulerAngles = rotationVec3 or newEntity.eulerAngles
     newEntity.scale = scaleVec3 or newEntity.scale
     newEntity.modelPack = modelPack or "Blocky_Characters"
-    newEntity.modelName = modelName or "Adventurer"
+    newEntity.modelName = modelName or "Adventurer.obj"
     newEntity.model = craft.model(asset.builtin[newEntity.modelPack][newEntity.modelName])
     EasyCraft.entities[newEntity.name] = newEntity
     return newEntity
@@ -250,6 +250,18 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     sameScale = entity1.scale == entity2.scale
     samePackName = entity1.packName == entity2.packName
     sameModelName = entity1.modelName == entity2.modelName
+    print(entity1.name, entity2.name)
+    print(sameName)
+    print(entity1.position, entity2.position)
+    print(samePosition)
+    print(entity1.eulerAngles, entity2.eulerAngles)
+    print(sameRotation)
+    print(entity1.scale, entity2.scale)
+    print(sameScale)
+    print(entity1.packName, entity2.packName)
+    print(samePackName)
+    print(entity1.modelName, entity2.modelName)
+    print(sameModelName)
     return sameName and samePosition and sameRotation and sameScale and samePackName and sameModelName
 end
 
@@ -286,6 +298,7 @@ function recreateScene()
     sceneTable.entities = {}
     ]].."\n"..entitiesString..[[
     
+        return sceneTable
     
 end]]
     saveProjectTab("recreateScene", dataString)
