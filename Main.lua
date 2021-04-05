@@ -15,9 +15,9 @@ function setup()
     -- use scene to make a new entity
     sceneEntity = EasyCraft.makeAThing("startingThing")
     
-    entities = {}
+    entityNames = {}
     currentEntityIndex = 1
-    table.insert(entities, sceneEntity)
+    table.insert(entityNames, sceneEntity.name)
     
     modelSets = {}
     currentSetIndex = 1
@@ -52,14 +52,14 @@ function setup()
     space.liveSettings.scale = vec3(4.000000, 4.000000, 4.000000)
     ]]
     
-    entities[currentEntityIndex]:add(craft.renderer, craft.model(modelSets[1][1]))
+    EasyCraft.entities[entities[currentEntityIndex]]:add(craft.renderer, craft.model(modelSets[1][1]))
     
     parameter.action("Entity: Use Next Model", function()
         currentModelIndex = currentModelIndex + 1
         if currentModelIndex > #modelSets[currentSetIndex] then
             currentModelIndex = 1
         end
-        local thisEntity = entities[currentEntityIndex]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
@@ -69,7 +69,7 @@ function setup()
     end)
     
     parameter.action("Entity: Use Previous Model", function()
-        local thisEntity = entities[currentEntityIndex]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         currentModelIndex = currentModelIndex - 1
@@ -91,7 +91,7 @@ function setup()
             currentModelIndex = 1
         end
         --   livePositioner:useTablesIn(modelSets[currentSetIndex].liveSettings)
-        local thisEntity = entities[currentEntityIndex]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(modelSets[currentSetIndex][currentModelIndex])
@@ -101,7 +101,7 @@ function setup()
     end)
     
     parameter.action("Change to Previous Model Pack", function()
-        local thisEntity = entities[currentEntityIndex]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         currentSetIndex = currentSetIndex - 1
@@ -121,13 +121,13 @@ function setup()
     parameter.action("New Entity", function()
         local idNumber = math.random(1,99999999)
         local newThing = EasyCraft.makeAThing(idNumber)
-        table.insert(entities, newThing)
+        table.insert(entities, newThing.name)
         currentEntityIndex = #entities
-        entities[currentEntityIndex]:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
+        EasyCraft.entities[entities[currentEntityIndex]]:add(craft.renderer, craft.model(modelSets[currentSetIndex][currentModelIndex]))
         newThing.modelPack = modelSets[currentSetIndex]
         newThing.modelName = modelSets[currentSetIndex][currentModelIndex]
-        print(entities[currentEntityIndex].position)
-        livePositioner:changeSubject(entities[currentEntityIndex])
+        print(EasyCraft.entities[entities[currentEntityIndex]].position)
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
     
     parameter.action("Select Next Entity", function()
@@ -136,7 +136,7 @@ function setup()
         else
             currentEntityIndex = currentEntityIndex + 1
         end
-        livePositioner:changeSubject(entities[currentEntityIndex])
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
     
     parameter.action("Select Previous Entity", function()
@@ -145,7 +145,7 @@ function setup()
         else
             currentEntityIndex = currentEntityIndex - 1
         end
-        livePositioner:changeSubject(entities[currentEntityIndex])
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
     
     parameter.boolean("ShowBounds", false)
@@ -162,7 +162,7 @@ function setup()
     if LivePositioner.useStoredCameraPosition then
         LivePositioner:useStoredCameraPosition()
     else
-        viewer = scene.camera:add(OrbitViewer, entities[currentEntityIndex].position, 23, 6, 80)
+        viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
     end
     
     
@@ -199,9 +199,9 @@ function update(dt)
     
     if ShowBounds then -- bounds don't scale
         -- for k,v in pairs(modelSets[currentSetIndex]) do
-        local b = entities[currentEntityIndex]:get(craft.renderer).model.bounds
+        local b = EasyCraft.entities[entities[currentEntityIndex]]:get(craft.renderer).model.bounds
         b2 = bounds(b.min, b.max)
-        b2:translate(entities[currentEntityIndex].position)
+        b2:translate(EasyCraft.entities[entities[currentEntityIndex]].position)
         scene.debug:bounds(b2, color(255,255,255,255))
         --   end
     end
