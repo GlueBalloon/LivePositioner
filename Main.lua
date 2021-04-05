@@ -13,7 +13,7 @@ function setup()
     --scene.camera:add(OrbitViewer, vec3(0,5,0), 23, 6, 80)
     
     -- use scene to make a new entity
-    sceneEntity = scene:entity()
+    sceneEntity = EasyCraft.makeAThing("startingThing")
     
     entities = {}
     currentEntityIndex = 1
