@@ -54,20 +54,31 @@ function setup()
     space.liveSettings.scale = vec3(4.000000, 4.000000, 4.000000)
     ]]
     
-   -- print(entities[currentEntityIndex])
- --   print(EasyCraft.entities[entities[currentEntityIndex]])
- --   print(EasyCraft.entities[entities[currentEntityIndex]].name)
+    -- print(entities[currentEntityIndex])
+    --   print(EasyCraft.entities[entities[currentEntityIndex]])
+    --   print(EasyCraft.entities[entities[currentEntityIndex]].name)
     
     local currentEntity = EasyCraft.entities[entities[currentEntityIndex]]
     currentEntity:remove(craft.renderer)
     currentEntity:add(craft.renderer, craft.model(getAssetFor(1, 1)))
     
-    parameter.watch("Welcome")
-    Welcome = "Use the controls below to make a custom scene with the built-in models."
+    --parameter.watch("Welcome")
+
     
     parameter.watch("Model")
+    parameter.watch("Pack")
     
-    parameter.action("Entity: Use Next Model", function()
+    parameter.integer("ModelIndex", 1, #modelSets[currentSetIndex], 1, function()
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        thisEntity:remove(craft.model)
+        thisEntity:remove(craft.renderer)
+        local newModel = craft.model(getAssetFor(currentSetIndex, ModelIndex))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][ModelIndex]
+        thisEntity:add(craft.renderer, newModel)
+    end)
+    
+    parameter.action("Next Model", function()
         currentModelIndex = currentModelIndex + 1
         if currentModelIndex > #modelSets[currentSetIndex] then
             currentModelIndex = 1
@@ -81,7 +92,7 @@ function setup()
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.action("Entity: Use Previous Model", function()
+    parameter.action("Previous Model", function()
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
@@ -95,9 +106,7 @@ function setup()
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.watch("Pack")
-    
-    parameter.action("Use Next Pack", function()
+    parameter.action("Next Pack", function()
         currentSetIndex = currentSetIndex + 1
         if currentSetIndex > #modelSets then
             currentSetIndex = 1
@@ -115,7 +124,7 @@ function setup()
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.action("Use Previous Pack", function()
+    parameter.action("Previous Pack", function()
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
@@ -155,7 +164,7 @@ function setup()
     end)
     
     parameter.boolean("ShowBounds", false)
-
+    
     
     parameter.watch("Adding")
     Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
@@ -173,11 +182,11 @@ function setup()
         livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
     
+    ModelIndexParameterCurrent = 1
+    PackIndexParameterCurrent = 1
+    clearAndRefreshParameters()
     -- Initialize a LivePositioner with the entity to be positioned
     livePositioner = LivePositioner(sceneEntity)
-    ptables = livePositioner:rangeTable(0, 0, 0, 500)
-    etables = livePositioner:rangeTable(0,0,0, 500)
-    stables = livePositioner:rangeTable(1,1,1,15,0,20)
     livePositioner:define(sceneEntity, ptables, etables, stables)
     --    livePositioner:useTablesIn(characters.liveSettings)
     
@@ -186,7 +195,66 @@ function setup()
         livePositioner:useStoredCameraPosition()
     else
         viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
-    end  
+    end
+end
+
+function clearAndRefreshParameters()
+    parameter.clear()
+    
+    WelcomeString = [[
+    Use the parameter controls to make a custom scene with Codea's built-in models.
+    
+    You can save your scene and it will appear as a function called 'recreateScene()' on the the recreateScene tab.
+        
+    You can then cut-and-paste that function into any project of your own, and use it for whatever you want.]]
+                
+    parameter.boolean("Show Welcome", false, function(value)
+        if value == true then
+            output.clear()                 
+            print(WelcomeString)
+        end
+        Welcome = false
+    end)
+                               
+    parameter.watch("Model")
+    parameter.integer("ModelIndex", 1, #modelSets[currentSetIndex], ModelIndexParameterCurrent, function()
+        if ModelIndex > #modelSets[currentSetIndex] then
+            ModelIndex = #modelSets[currentSetIndex]
+        end
+        currentModelIndex = ModelIndex
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        thisEntity:remove(craft.model)
+        thisEntity:remove(craft.renderer)
+        local newModel = craft.model(getAssetFor(currentSetIndex, ModelIndex))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][ModelIndex]
+        thisEntity:add(craft.renderer, newModel)
+    end)
+    
+    parameter.watch("Pack")
+    parameter.integer("PackIndex", 1, #modelSets, PackIndexParameterCurrent, function()
+        if PackIndexParameterCurrent ~= PackIndex then
+            if currentModelIndex > #modelSets[PackIndex] then
+                ModelIndex = #modelSets[PackIndex]
+                currentModelIndex = ModelIndex
+            end
+            currentSetIndex = PackIndex
+            local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+            thisEntity:remove(craft.model)
+            thisEntity:remove(craft.renderer)
+            local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+            thisEntity.modelPack = modelSetNames[currentSetIndex]
+            thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
+            thisEntity:add(craft.renderer, newModel)
+            PackIndexParameterCurrent = PackIndex
+            ModelIndexParameterCurrent = ModelIndex
+            clearAndRefreshParameters()
+        end
+    end)
+    
+    parameter.action("Save Just Camera Position", function()
+        EasyCraft.saveCameraPlacement()
+    end)
 end
 
 function getCurrentEntity()
@@ -231,7 +299,7 @@ function update(dt)
     -- LivePositioner stuff:
     -- Update the LivePositioner
     livePositioner:update()
-
+    
     if ShowBounds then -- bounds don't scale
         -- for k,v in pairs(modelSets[currentSetIndex]) do
         local b = EasyCraft.entities[entities[currentEntityIndex]]:get(craft.renderer).model.bounds

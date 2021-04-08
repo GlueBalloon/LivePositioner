@@ -20,6 +20,7 @@
 		<string>CodeaUnit</string>
 		<string>recreateScene</string>
 		<string>easyCraftRecreate</string>
+		<string>SceneBackup</string>
 	</array>
 	<key>Dependencies</key>
 	<array/>

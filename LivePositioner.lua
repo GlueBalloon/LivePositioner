@@ -10,7 +10,7 @@ LivePositioner = class()
 function LivePositioner:init(thing, pTable, eTable, sTable)
     self.subject = thing
     local position = pTable or self:rangeTable(0.5,0.5,10.5,1000)
-    local eulers = eTable or self:rangeTable(0,0,0,400)
+    local eulers = eTable or self:rangeTable(0,0,0,180)
     local scales = sTable or self:rangeTable(1,1,1,150)
     self:setNonPositioningParameters()
     self:define(self.subject, position, eulers, scales)
@@ -18,11 +18,15 @@ end
 
 function LivePositioner:changeSubject(thisSubject) 
     print(thisSubject)
+    self.subjectChanging = true
     self.subject = thisSubject
     subjectScaleAll = 1
     subjectX, subjectY, subjectZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
-    subjectEulerX, subjectEulerY, subjectEulerZ = thisSubject.eulerAngles.x, thisSubject.eulerAngles.y, thisSubject.eulerAngles.z
+    local eulersFromRotation = thisSubject.rotation:angles()
+    eulersFromRotation = thisSubject.eulerAngles
+    subjectEulerX, subjectEulerY, subjectEulerZ = eulersFromRotation.x, eulersFromRotation.y, eulersFromRotation.z
     subjectScaleX, subjectScaleY, subjectScaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
+    self.subjectChanging = false
 end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
@@ -87,6 +91,7 @@ function LivePositioner:define(thing, pTable, eTable, sTable)
     if thing then
         self.subject = thing
     end
+    parameter.boolean("Micro-adjustments")
     if pTable then
         self:setPositionsAndRanges(pTable)
     end
@@ -128,6 +133,10 @@ function LivePositioner:setPositionsAndRanges(rangeTable)
         rangeTable.x - rangeTable.range,  
         rangeTable.x + rangeTable.range,
         rangeTable.x)
+    parameter.number("subjectX",
+    xMin,
+    xMax,
+    xFactor)
     parameter.number("subjectY", 
         rangeTable.y - rangeTable.range,  
         rangeTable.y + rangeTable.range,
@@ -180,11 +189,10 @@ end
 function LivePositioner:update()
     if subjectX then
         self.subject.position = vec3(subjectX, subjectY, subjectZ)
-        subjectPosition = self.subject.position
+     --   subjectPosition = self.subject.position
     end
     if subjectEulerX then
-        self.subject.eulerAngles = vec3(subjectEulerX, subjectEulerY, subjectEulerZ)
-        subjectEulers = self.subject.eulerAngles
+        self.subject.rotation = quat.eulerAngles(subjectEulerX, subjectEulerY, subjectEulerZ)
     end
     if subjectScaleX then
         local multiplier = 1
@@ -192,7 +200,7 @@ function LivePositioner:update()
             multiplier = subjectScaleAll
         end
         self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
-        subjectScale = self.subject.scale
+   --     subjectScale = self.subject.scale
     end
     --[[
     if subjectScaleAll then

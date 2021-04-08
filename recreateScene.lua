@@ -11,16 +11,16 @@ function recreateScene()
     
     
     local newEntity = scene:entity()
-    newEntity.position = vec3(0.000000, -12.660173, 11.019481)
-    newEntity.eulerAngles = vec3(-33.733883, -48.489120, 9.981833)
+    newEntity.position = vec3(48.119049, -21.145021, -19.803030)
+    newEntity.eulerAngles = vec3(-34.419540, 12.648188, -127.444557)
     newEntity.scale = vec3(1.000000, 1.000000, 1.000000)
     newEntity.modelPack = "Blocky_Characters"
-    newEntity.modelName = "Woman.obj"
-    newEntity.name = "31998308"
+    newEntity.modelName = "Orc.obj"
+    newEntity.name = "54253005"
 
         
     sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Woman.obj"])
+    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Orc.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
@@ -39,44 +39,72 @@ function recreateScene()
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(242.924240, -42.790043, 49.461040)
-    newEntity.eulerAngles = vec3(5.194806, 81.212151, 0.000000)
-    newEntity.scale = vec3(58.831169, 39.220779, 91.515152)
-    newEntity.modelPack = "Nature"
-    newEntity.modelName = "naturePack_083.obj"
-    newEntity.name = "11457043"
-
-        
-    sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["Nature"]["naturePack_083.obj"])
-    newEntity:add(craft.renderer, newModel)
-        
-            
-    local newEntity = scene:entity()
-    newEntity.position = vec3(-60.106060, 91.409088, 0.000000)
-    newEntity.eulerAngles = vec3(103.648911, 26.809767, 113.959236)
-    newEntity.scale = vec3(2.900433, 2.900433, 2.900433)
-    newEntity.modelPack = "SpaceKit"
-    newEntity.modelName = "spaceCraft5.obj"
-    newEntity.name = "36628789"
-
-        
-    sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft5.obj"])
-    newEntity:add(craft.renderer, newModel)
-        
-            
-    local newEntity = scene:entity()
-    newEntity.position = vec3(78.422081, -47.119049, 213.963211)
-    newEntity.eulerAngles = vec3(2.931668, -36.403938, -10.759927)
-    newEntity.scale = vec3(65.367966, 52.294373, 52.294373)
+    newEntity.position = vec3(156.344162, -64.435066, 110.067101)
+    newEntity.eulerAngles = vec3(23.722658, -17.959650, -7.265034)
+    newEntity.scale = vec3(84.978348, 84.978348, 65.367966)
     newEntity.modelPack = "Nature"
     newEntity.modelName = "naturePack_119.obj"
-    newEntity.name = "15728210"
+    newEntity.name = "16790978"
 
         
     sceneTable.entities[newEntity.name] = newEntity
     local newModel = craft.model(asset.builtin["Nature"]["naturePack_119.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(87.080086, 65.435066, 53.790043)
+    newEntity.eulerAngles = vec3(169.217957, 13.640569, -153.835617)
+    newEntity.scale = vec3(2.121212, 2.121212, 2.121212)
+    newEntity.modelPack = "SpaceKit"
+    newEntity.modelName = "spaceCraft6.obj"
+    newEntity.name = "32653373"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft6.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(-125.041122, -34.132034, -145.344162)
+    newEntity.eulerAngles = vec3(0.000000, 13.246754, 0.000000)
+    newEntity.scale = vec3(4.575758, 8.170996, 3.922078)
+    newEntity.modelPack = "CastleKit"
+    newEntity.modelName = "wallCorner.obj"
+    newEntity.name = "41545385"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["CastleKit"]["wallCorner.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(-241.924240, -38.461040, 118.725105)
+    newEntity.eulerAngles = vec3(0.000000, -24.242435, 0.000000)
+    newEntity.scale = vec3(121.584419, 43.796535, 125.179657)
+    newEntity.modelPack = "Nature"
+    newEntity.modelName = "naturePack_146.obj"
+    newEntity.name = "17868578"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["Nature"]["naturePack_146.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(0.000000, -12.660173, 11.019481)
+    newEntity.eulerAngles = vec3(-55.822338, -11.143201, 0.347442)
+    newEntity.scale = vec3(1.000000, 1.000000, 1.000000)
+    newEntity.modelPack = "Blocky_Characters"
+    newEntity.modelName = "Woman.obj"
+    newEntity.name = "31998308"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Woman.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
@@ -95,12 +123,12 @@ function recreateScene()
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(156.344162, -64.435066, 110.067101)
-    newEntity.eulerAngles = vec3(1.952435, -29.378199, -3.975064)
-    newEntity.scale = vec3(84.978348, 84.978348, 65.367966)
+    newEntity.position = vec3(78.422081, -47.119049, 213.963211)
+    newEntity.eulerAngles = vec3(33.101234, 16.357351, -4.904434)
+    newEntity.scale = vec3(65.367966, 52.294373, 52.294373)
     newEntity.modelPack = "Nature"
     newEntity.modelName = "naturePack_119.obj"
-    newEntity.name = "16790978"
+    newEntity.name = "15728210"
 
         
     sceneTable.entities[newEntity.name] = newEntity
@@ -109,44 +137,58 @@ function recreateScene()
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(48.119049, -21.145021, -19.803030)
-    newEntity.eulerAngles = vec3(-23.359898, 28.744947, -129.576965)
+    newEntity.position = vec3(-99.067101, -38.461040, -192.963211)
+    newEntity.eulerAngles = vec3(0.000000, -76.190475, 0.000000)
+    newEntity.scale = vec3(4.159780, 8.319560, 6.363636)
+    newEntity.modelPack = "CastleKit"
+    newEntity.modelName = "wall.obj"
+    newEntity.name = "77900663"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["CastleKit"]["wall.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(-60.106060, 91.409088, 0.000000)
+    newEntity.eulerAngles = vec3(109.756035, -51.459404, 11.400891)
+    newEntity.scale = vec3(2.900433, 2.900433, 2.900433)
+    newEntity.modelPack = "SpaceKit"
+    newEntity.modelName = "spaceCraft5.obj"
+    newEntity.name = "36628789"
+
+        
+    sceneTable.entities[newEntity.name] = newEntity
+    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft5.obj"])
+    newEntity:add(craft.renderer, newModel)
+        
+            
+    local newEntity = scene:entity()
+    newEntity.position = vec3(11.928572, 3.270563, -15.820346)
+    newEntity.eulerAngles = vec3(-4.730083, 7.462547, 3.023466)
     newEntity.scale = vec3(1.000000, 1.000000, 1.000000)
     newEntity.modelPack = "Blocky_Characters"
-    newEntity.modelName = "Orc.obj"
-    newEntity.name = "54253005"
+    newEntity.modelName = "Soldier.obj"
+    newEntity.name = "63049979"
 
         
     sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Orc.obj"])
+    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Soldier.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(30.803030, -3.829004, -84.738098)
-    newEntity.eulerAngles = vec3(53.336929, -8.054617, 20.170734)
-    newEntity.scale = vec3(3.116883, 3.116883, 3.116883)
-    newEntity.modelPack = "SpaceKit"
-    newEntity.modelName = "spaceCraft2.obj"
-    newEntity.name = "46142188"
-
-        
-    sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft2.obj"])
-    newEntity:add(craft.renderer, newModel)
-        
-            
-    local newEntity = scene:entity()
-    newEntity.position = vec3(-241.924240, -38.461040, 118.725105)
-    newEntity.eulerAngles = vec3(0.000000, -24.242435, 0.000000)
-    newEntity.scale = vec3(121.584419, 43.796535, 125.179657)
+    newEntity.position = vec3(242.924240, -42.790043, 49.461040)
+    newEntity.eulerAngles = vec3(5.109953, 81.213379, -0.072688)
+    newEntity.scale = vec3(58.831169, 39.220779, 91.515152)
     newEntity.modelPack = "Nature"
-    newEntity.modelName = "naturePack_146.obj"
-    newEntity.name = "17868578"
+    newEntity.modelName = "naturePack_083.obj"
+    newEntity.name = "11457043"
 
         
     sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["Nature"]["naturePack_146.obj"])
+    local newModel = craft.model(asset.builtin["Nature"]["naturePack_083.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
@@ -166,7 +208,7 @@ function recreateScene()
             
     local newEntity = scene:entity()
     newEntity.position = vec3(15.564935, -18.201298, 43.573593)
-    newEntity.eulerAngles = vec3(170.169281, -74.731117, 172.401855)
+    newEntity.eulerAngles = vec3(-105.633163, -15.653530, 0.091831)
     newEntity.scale = vec3(1.000000, 1.000000, 1.000000)
     newEntity.modelPack = "Blocky_Characters"
     newEntity.modelName = "Man.obj"
@@ -179,30 +221,30 @@ function recreateScene()
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(87.080086, 65.435066, 53.790043)
-    newEntity.eulerAngles = vec3(-164.196304, -7.188144, 151.411453)
-    newEntity.scale = vec3(2.121212, 2.121212, 2.121212)
+    newEntity.position = vec3(30.803030, -3.829004, -84.738098)
+    newEntity.eulerAngles = vec3(-47.915939, -28.100304, 36.911903)
+    newEntity.scale = vec3(3.116883, 3.116883, 3.116883)
     newEntity.modelPack = "SpaceKit"
-    newEntity.modelName = "spaceCraft6.obj"
-    newEntity.name = "32653373"
+    newEntity.modelName = "spaceCraft2.obj"
+    newEntity.name = "46142188"
 
         
     sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft6.obj"])
+    local newModel = craft.model(asset.builtin["SpaceKit"]["spaceCraft2.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
     local newEntity = scene:entity()
-    newEntity.position = vec3(11.928572, 3.270563, -15.820346)
-    newEntity.eulerAngles = vec3(-7.353743, 4.898060, 3.017165)
-    newEntity.scale = vec3(1.000000, 1.000000, 1.000000)
-    newEntity.modelPack = "Blocky_Characters"
-    newEntity.modelName = "Soldier.obj"
-    newEntity.name = "63049979"
+    newEntity.position = vec3(1000.500000, 1000.500000, 1010.500000)
+    newEntity.eulerAngles = vec3(0.000000, 15.584415, 0.000000)
+    newEntity.scale = vec3(4.414460, 8.828920, 4.966268)
+    newEntity.modelPack = "CastleKit"
+    newEntity.modelName = "wallNarrowCorner.obj"
+    newEntity.name = "433713"
 
         
     sceneTable.entities[newEntity.name] = newEntity
-    local newModel = craft.model(asset.builtin["Blocky_Characters"]["Soldier.obj"])
+    local newModel = craft.model(asset.builtin["CastleKit"]["wallNarrowCorner.obj"])
     newEntity:add(craft.renderer, newModel)
         
             
