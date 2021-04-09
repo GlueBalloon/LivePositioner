@@ -22,9 +22,12 @@ function LivePositioner:changeSubject(thisSubject)
     self.subject = thisSubject
     subjectScaleAll = 1
     subjectX, subjectY, subjectZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
-    local eulersFromRotation = thisSubject.rotation:angles()
-    eulersFromRotation = thisSubject.eulerAngles
-    subjectEulerX, subjectEulerY, subjectEulerZ = eulersFromRotation.x, eulersFromRotation.y, eulersFromRotation.z
+    if self.subject.sliderEulers then
+        subjectEulerX, subjectEulerY, subjectEulerZ = self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z
+        self.subject.rotation = quat.eulerAngles(subjectEulerX, subjectEulerY, subjectEulerZ)
+    else
+        subjectEulerX, subjectEulerY, subjectEulerZ = self.subject.eulerAngles.x, self.subject.eulerAngles.y, self.subject.eulerAngles.z
+    end
     subjectScaleX, subjectScaleY, subjectScaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
     self.subjectChanging = false
 end
@@ -193,6 +196,7 @@ function LivePositioner:update()
     end
     if subjectEulerX then
         self.subject.rotation = quat.eulerAngles(subjectEulerX, subjectEulerY, subjectEulerZ)
+        self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z = subjectEulerX, subjectEulerY, subjectEulerZ
     end
     if subjectScaleX then
         local multiplier = 1

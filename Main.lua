@@ -184,7 +184,7 @@ function setup()
     
     ModelIndexParameterCurrent = 1
     PackIndexParameterCurrent = 1
-    clearAndRefreshParameters()
+   -- clearAndRefreshParameters()
     -- Initialize a LivePositioner with the entity to be positioned
     livePositioner = LivePositioner(sceneEntity)
     livePositioner:define(sceneEntity, ptables, etables, stables)

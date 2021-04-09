@@ -207,11 +207,15 @@ z = math.random(0, 99999999) * 0.00001
 return vec3(x,y,z)
 end
 
-EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotationVec3, scaleVec3)
+EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotationVec3, scaleVec3, sliderEulers)
     local newEntity = scene:entity()
     newEntity.name = name or "entityMadeAt"..tostring(os.clock())
     newEntity.position = positionVec3 or newEntity.position
     newEntity.eulerAngles = rotationVec3 or newEntity.eulerAngles
+    if sliderEulers then
+        newEntity.rotation = quat.eulerAngles(sliderEulers.x, sliderEulers.y, sliderEulers.z)
+    end
+    newEntity.sliderEulers = sliderEulers or vec3(0,0,0)
     newEntity.scale = scaleVec3 or newEntity.scale
     newEntity.modelPack = modelPack or "Blocky_Characters"
     newEntity.modelName = modelName or "Adventurer.obj"
@@ -237,6 +241,7 @@ return [[
     newEntity.position = vec3]]..tostring(entity.position).."\n"..[[
     newEntity.eulerAngles = vec3]]..tostring(entity.eulerAngles).."\n"..[[
     newEntity.scale = vec3]]..tostring(entity.scale).."\n"..[[
+    newEntity.sliderEulers = vec3]]..tostring(entity.sliderEulers).."\n"..[[
     newEntity.modelPack = "]]..entity.modelPack..'"'.."\n"..[[
     newEntity.modelName = "]]..entity.modelName..'"'.."\n"..[[
     newEntity.name = "]]..entity.name..[["]]
@@ -244,7 +249,7 @@ end
 
 EasyCraft.stringForEasyCraftRecreatingEntity = function(entity)
     return [[   
-    local newEntity = EasyCraft.makeAThing("]]..entity.name..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)..[[) ]]
+    local newEntity = EasyCraft.makeAThing("]]..entity.name..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)..[[, vec3]]..tostring(entity.sliderEulers)..[[) ]]
 end
 
 EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
@@ -253,6 +258,7 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     samePosition = entity1.position == entity2.position
     sameRotation = entity1.eulerAngles == entity2.eulerAngles
     sameScale = entity1.scale == entity2.scale
+    sameSliderEulers = entity1.sliderEulers == entity2.sliderEulers
     samePackName = entity1.modelPack == entity2.modelPack
     sameModelName = entity1.modelName == entity2.modelName
     print(entity1.name, entity2.name)
@@ -263,11 +269,13 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
     print(sameRotation)
     print(entity1.scale, entity2.scale)
     print(sameScale)
+    print(entity1.sliderEulers, entity2.sliderEulers)
+    print(sameSliderEulers)
     print(entity1.modelPack, entity2.modelPack)
     print(samePackName)
     print(entity1.modelName, entity2.modelName)
     print(sameModelName)
-    return sameName and samePosition and sameRotation and sameScale and samePackName and sameModelName
+    return sameName and samePosition and sameRotation and sameScale and samePackName and sameModelName and sameSliderEulers
 end
 
 EasyCraft.saveScene = function ()
