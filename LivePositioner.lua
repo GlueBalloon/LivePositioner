@@ -9,11 +9,13 @@ LivePositioner = class()
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
 function LivePositioner:init(thing, pTable, eTable, sTable)
     self.subject = thing
+    --[[
     local position = pTable or self:rangeTable(0.5,0.5,10.5,1000)
     local eulers = eTable or self:rangeTable(0,0,0,180)
     local scales = sTable or self:rangeTable(1,1,1,150)
     self:setNonPositioningParameters()
     self:define(self.subject, position, eulers, scales)
+    ]]
 end
 
 function LivePositioner:changeSubject(thisSubject) 
@@ -34,6 +36,17 @@ end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
 function LivePositioner:setNonPositioningParameters()
+    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'. Anything that was there before is overwritten forever.\n\nIf you want to preserve a creation for good, manually copy the contents of the 'recreateScene' tab to another location.\n\nYou can also save your camera position only, separate from everything else, to a tab called 'restoreCameraSettings'."
+    
+    TODO: make tab be called 'restoreCameraSettings'
+    
+    parameter.boolean("Save And Load Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(SaveAndLoadFo)
+        end
+        Save_And_Load_Info = true
+    end)
     parameter.watch("Storing")
     Storing = "Only one save/load slot, so be careful. If you want to keep your current save forever, copy the contents of the 'recreateScene' tab to another location."
     parameter.action("Save Scene", 
@@ -60,50 +73,41 @@ function LivePositioner:setNonPositioningParameters()
         if easyCraftRecreate then
             newSceneParts = easyCraftRecreate()
         end
-        --need an entity to become the new subject, so grab any entity from recreation
-        --this is super kludgey but I can't think how else to grab a single value from a hash
-        
-        --[[
-        if not newSceneParts then return end
-        local arbitraryEntity
-        for k, v in pairs(newSceneParts.entities) do
-            arbitraryEntity = v
-            break
-        end
-        if arbitraryEntity then
-            print(arbitraryEntity)
-            LivePositioner:changeSubject(EasyCraft.entities[arbitraryEntity.name])
-        end
-        
-        for k, v in pairs(destroyUs) do
-            v:destroy()
-        end
-        ]]
---[[
-        if LivePositioner.useStoredCameraPosition then
-            LivePositioner:useStoredCameraPosition()
-        end
-        ]]
+    end)
+    
+    parameter.action("Save Just Camera Position", function()
+        EasyCraft.saveCameraPlacement()
     end)
 end
 
 -- defineLiveParameters(...) sets up the parameter controls
 function LivePositioner:define(thing, pTable, eTable, sTable)
-    parameter.watch("Positioning")
-    Positioning = "Use these sliders to position, rotate, and scale the current selection"
-    if thing then
-        self.subject = thing
-    end
-    parameter.boolean("Micro-adjustments")
-    if pTable then
-        self:setPositionsAndRanges(pTable)
-    end
-    if eTable then
-        self:setEulersAndRanges(eTable)
-    end
-    if sTable then
-        self:setScalesAndRanges(sTable)
-    end
+    local position = pTable or self:rangeTable(0.5,0.5,10.5,1000)
+    local eulers = eTable or self:rangeTable(0,0,0,180)
+    local scales = sTable or self:rangeTable(1,1,1,150,1,40)
+    LivePositioner:setUpParametersWithMicroSettingOf(false)
+end
+    
+function LivePositioner:setUpParametersWithMicroSettingOf(setting)
+    PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
+    
+    parameter.boolean("Positioning Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(PositioningFo)
+        end
+        Positioning_Info = true
+    end)
+    
+    parameter.boolean("MicroMode", false, function(microOn)
+        if microOn ~= setting then
+            setUpParametersWithMicroSettingOf(microOn)
+        end
+    end)
+    
+    self:setPositionsAndRanges(position)
+    self:setEulersAndRanges(eulers)
+    self:setScalesAndRanges(scales)
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)
@@ -206,12 +210,88 @@ function LivePositioner:update()
         self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
    --     subjectScale = self.subject.scale
     end
-    --[[
-    if subjectScaleAll then
-        local computedX, computedY, computedZ = subjectScaleX * subjectScaleAll, subjectScaleY * subjectScaleAll, subjectScaleZ * subjectScaleAll
-     --   self.subject.scale = vec3(computedX, computedY, computedZ)
-        subjectAllScaled = self.subject.scale
-    end
-    ]]
 end
 
+
+--[[
+-- Macro-Micro Sliders
+
+function setup()
+    scene = craft.scene()
+    scene.camera.position=vec3(0,1,-4)
+    
+    ground = scene:entity()
+    ground.model = craft.model.cube(vec3(1,.2,1))
+    ground.material = craft.material(asset.builtin.Materials.Specular)
+    ground.material.map = readImage(asset.builtin.Surfaces.Desert_Cliff_Roughness)
+    ground.position = vec3(1,1,1)
+    
+    ground2 = scene:entity()
+    ground2.model = craft.model.cube(vec3(1,.2,1))
+    ground2.material = craft.material(asset.builtin.Materials.Specular)
+    ground2.material.map = readImage(asset.builtin.Surfaces.Desert_Cliff_Roughness)
+    ground2.position = vec3(-1,1,1)
+    
+    fill(255)
+    
+    setUpParametersWithMicroSettingOf(false)
+end
+
+function setUpParametersWithMicroSettingOf(setting)
+    if not gx then
+        gx,gy,gz = 0,0,0
+        switchState = false
+    end
+    parameter.clear()
+    parameter.boolean("Micro", setting, function(microOn)
+        if microOn ~= setting then
+            setUpParametersWithMicroSettingOf(microOn)
+        end
+    end)
+    if setting == false then
+        parameter.integer("gx",-180,180,gx)
+        parameter.integer("gy",-180,180,gy)
+        parameter.integer("gz",-180,180,gz)
+    elseif setting == true then
+        parameter.integer("gx",gx-10,gx+10,gx)
+        parameter.integer("gy",gy-10,gy+10,gy)
+        parameter.integer("gz",gz-10,gz+10,gz)
+    end
+    parameter.boolean("switchControlledBlock", switchState, function(bool)
+        if bool == switchState then return end
+        switchState = bool == true
+        local newBlock, oldBlock = ground2, ground
+        if switchState == true then
+            newBlock, oldBlock = ground, ground2
+        end
+        oldBlock.displayEulers = vec3(gx,gy,gz)
+        if newBlock.displayEulers then
+            gx,gy,gz = newBlock.displayEulers.x, newBlock.displayEulers.y, newBlock.displayEulers.z
+        else
+            gx,gy,gz = 0,0,0
+        end
+        if setting == true then
+            setUpParametersWithMicroSettingOf(true)
+        end
+    end)
+end
+
+function update(dt)
+    if switchControlledBlock == true then
+        ground2.rotation=quat.eulerAngles(gx,gy,gz)
+    else
+        ground.rotation=quat.eulerAngles(gx,gy,gz)
+    end
+    scene:update(dt)
+end
+
+function draw()
+    update(DeltaTime)
+    scene:draw()
+    if switchControlledBlock == true then
+        text("eulers control block on right",WIDTH/2,HEIGHT/2+150)
+    else
+        text("eulers control block on left",WIDTH/2,HEIGHT/2-150)
+    end
+end
+]]

@@ -65,11 +65,12 @@ function setup()
     --parameter.watch("Welcome")
 
     
+    --[[
     parameter.watch("Model")
     parameter.watch("Pack")
     
     parameter.integer("ModelIndex", 1, #modelSets[currentSetIndex], 1, function()
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(currentSetIndex, ModelIndex))
@@ -83,7 +84,7 @@ function setup()
         if currentModelIndex > #modelSets[currentSetIndex] then
             currentModelIndex = 1
         end
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
@@ -93,7 +94,7 @@ function setup()
     end)
     
     parameter.action("Previous Model", function()
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         currentModelIndex = currentModelIndex - 1
@@ -115,7 +116,7 @@ function setup()
             currentModelIndex = 1
         end
         --   livePositioner:useTablesIn(modelSets[currentSetIndex].liveSettings)
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
@@ -125,7 +126,7 @@ function setup()
     end)
     
     parameter.action("Previous Pack", function()
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         currentSetIndex = currentSetIndex - 1
@@ -141,6 +142,132 @@ function setup()
         thisEntity.modelPack = modelSetNames[currentSetIndex]
         thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
     end)
+    ]]
+    
+    --[[
+    parameter.watch("Selecting")
+    Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
+    
+    parameter.action("Select Next Entity", function()
+        if currentEntityIndex == #entities then
+            currentEntityIndex = 1
+        else
+            currentEntityIndex = currentEntityIndex + 1
+        end
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    
+    parameter.action("Select Previous Entity", function()
+        if currentEntityIndex == 1 then
+            currentEntityIndex = #entities
+        else
+            currentEntityIndex = currentEntityIndex - 1
+        end
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    
+    parameter.boolean("ShowBounds", false)
+    
+    
+    parameter.watch("Adding")
+    Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
+    parameter.action("New Entity", function()
+        local idNumber = math.random(1,99999999)
+        local newThing = EasyCraft.makeAThing(idNumber)
+        table.insert(entities, newThing.name)
+        currentEntityIndex = #entities
+        local currentE = getCurrentEntity()
+        currentE:remove(craft.renderer)
+        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
+        currentE.modelPack = modelSetNames[currentSetIndex]
+        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
+        print(EasyCraft.entities[entities[currentEntityIndex] ].position)
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    ]]
+    
+   -- clearAndRefreshParameters()
+
+    -- Initialize a LivePositioner with the entity to be positioned
+    livePositioner = LivePositioner(sceneEntity)
+    --livePositioner:define(sceneEntity, ptables, etables, stables)
+    --    livePositioner:useTablesIn(characters.liveSettings)
+    setUpParametersWithMicroSettingOf(false, livePositioner)
+    
+    if LivePositioner.useStoredCameraPosition then
+        livePositioner:useStoredCameraPosition()
+    else
+        viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
+    end
+end
+
+function setUpParametersWithMicroSettingOf(isMicro, positioner)
+    
+    if not ModelIndexParameterCurrent then
+        ModelIndexParameterCurrent = 1
+        PackIndexParameterCurrent = 1
+    end
+
+    parameter.clear()
+    
+    WelcomeString = "Welcome to LivePositioner!\n\nUse the parameter controls to make a custom scene with Codea's built-in models.\n\nYou can save your scene, and it will appear as a function called 'recreateScene()' on the the recreateScene tab.\n\nYou can then cut-and-paste that function into any project of your own, and use it for whatever you want."
+    
+    parameter.boolean("Show Welcome", true, function(value)
+        if value == false then
+            output.clear()
+            print(WelcomeString)
+        end
+        Show_Welcome = true
+    end)
+    
+    ModelInfo = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
+    
+    parameter.boolean("Model Choosing Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(ModelInfo)
+        end
+        Model_Choosing_Info = true
+    end)
+    
+    parameter.watch("CurrentModel")
+    parameter.integer("ModelChooser", 1, #modelSets[currentSetIndex], ModelIndexParameterCurrent, function()
+        if ModelChooser > #modelSets[currentSetIndex] then
+            ModelChooser = #modelSets[currentSetIndex]
+        end
+        currentModelIndex = ModelChooser
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        thisEntity:remove(craft.model)
+        thisEntity:remove(craft.renderer)
+        local newModel = craft.model(getAssetFor(currentSetIndex, ModelChooser))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][ModelChooser]
+        thisEntity:add(craft.renderer, newModel)
+    end)
+    
+    parameter.watch("CurrentPack")
+    parameter.integer("PackChooser", 1, #modelSets, PackIndexParameterCurrent, function()
+        if PackIndexParameterCurrent ~= PackChooser then
+            if currentModelIndex > #modelSets[PackChooser] then
+                ModelChooser = #modelSets[PackChooser]
+                currentModelIndex = ModelChooser
+            end
+            currentSetIndex = PackChooser
+            local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+            thisEntity:remove(craft.model)
+            thisEntity:remove(craft.renderer)
+            local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+            thisEntity.modelPack = modelSetNames[currentSetIndex]
+            thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
+            thisEntity:add(craft.renderer, newModel)
+            PackIndexParameterCurrent = PackChooser
+            ModelIndexParameterCurrent = ModelChooser
+            setUpParametersWithMicroSettingOf(isMicro, positioner)
+        end
+    end)
+    
+    positioner:define()
+    positioner:setNonPositioningParameters()
     
     parameter.watch("Selecting")
     Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
@@ -182,79 +309,7 @@ function setup()
         livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
     end)
     
-    ModelIndexParameterCurrent = 1
-    PackIndexParameterCurrent = 1
-   -- clearAndRefreshParameters()
-    -- Initialize a LivePositioner with the entity to be positioned
-    livePositioner = LivePositioner(sceneEntity)
-    livePositioner:define(sceneEntity, ptables, etables, stables)
-    --    livePositioner:useTablesIn(characters.liveSettings)
-    
-    
-    if LivePositioner.useStoredCameraPosition then
-        livePositioner:useStoredCameraPosition()
-    else
-        viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
-    end
-end
 
-function clearAndRefreshParameters()
-    parameter.clear()
-    
-    WelcomeString = [[
-    Use the parameter controls to make a custom scene with Codea's built-in models.
-    
-    You can save your scene and it will appear as a function called 'recreateScene()' on the the recreateScene tab.
-        
-    You can then cut-and-paste that function into any project of your own, and use it for whatever you want.]]
-                
-    parameter.boolean("Show Welcome", false, function(value)
-        if value == true then
-            output.clear()                 
-            print(WelcomeString)
-        end
-        Welcome = false
-    end)
-                               
-    parameter.watch("Model")
-    parameter.integer("ModelIndex", 1, #modelSets[currentSetIndex], ModelIndexParameterCurrent, function()
-        if ModelIndex > #modelSets[currentSetIndex] then
-            ModelIndex = #modelSets[currentSetIndex]
-        end
-        currentModelIndex = ModelIndex
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
-        thisEntity:remove(craft.model)
-        thisEntity:remove(craft.renderer)
-        local newModel = craft.model(getAssetFor(currentSetIndex, ModelIndex))
-        thisEntity.modelPack = modelSetNames[currentSetIndex]
-        thisEntity.modelName = modelSets[currentSetIndex][ModelIndex]
-        thisEntity:add(craft.renderer, newModel)
-    end)
-    
-    parameter.watch("Pack")
-    parameter.integer("PackIndex", 1, #modelSets, PackIndexParameterCurrent, function()
-        if PackIndexParameterCurrent ~= PackIndex then
-            if currentModelIndex > #modelSets[PackIndex] then
-                ModelIndex = #modelSets[PackIndex]
-                currentModelIndex = ModelIndex
-            end
-            currentSetIndex = PackIndex
-            local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
-            thisEntity:remove(craft.model)
-            thisEntity:remove(craft.renderer)
-            local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
-            thisEntity.modelPack = modelSetNames[currentSetIndex]
-            thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
-            thisEntity:add(craft.renderer, newModel)
-            PackIndexParameterCurrent = PackIndex
-            ModelIndexParameterCurrent = ModelIndex
-            clearAndRefreshParameters()
-        end
-    end)
-    
-    parameter.action("Save Just Camera Position", function()
-        EasyCraft.saveCameraPlacement()
-    end)
 end
 
 function getCurrentEntity()
@@ -317,8 +372,8 @@ function draw()
     -- Draw the scene
     scene:draw()
     
-    Model = modelSets[currentSetIndex][currentModelIndex]
-    Pack = modelSetNames[currentSetIndex]
+    CurrentModel = modelSets[currentSetIndex][currentModelIndex]
+    CurrentPack = modelSetNames[currentSetIndex]
     
     --[[
     pushMatrix()
