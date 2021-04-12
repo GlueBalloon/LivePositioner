@@ -168,7 +168,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         Positioning_Info = true
     end)
     
-    
     parameter.boolean("MicroMode", setting, function(microOn)
         print(microOn, setting)
         if microOn ~= setting then
@@ -176,15 +175,25 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             self:setUpParametersWithMicroSettingOf(microOn)
         end
     end)
-    if setting == false then
-        self:setPositionsAndRanges(self:rangeTable(0,0,0,1000))
-        self:setEulersAndRanges(self:rangeTable(0,0,0,180))
-        self:setScalesAndRanges(self:rangeTable(1,1,1,150,1,40))
+    
+    local setSlidersTo = {}
+    if not subjectX then
+        setSlidersTo.positions = self:rangeTable(0,0,0,1000)
+        setSlidersTo.eulers = self:rangeTable(0,0,0,180)
+        setSlidersTo.scale = self:rangeTable(1,1,1,150,1,40)
+    elseif setting == false then
+        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ, 1000)
+        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,180)
+        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,150,subjectScaleAll,40)
     elseif setting == true then
-        self:setPositionsAndRanges(self:rangeTable(subjectX, subjectY, subjectZ,100))
-        self:setEulersAndRanges(self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,40))
-        self:setScalesAndRanges(self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,10,1,5))
+        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ,50)
+        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,40)
+        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,10,subjectScaleAll,5)
     end
+    
+    self:setPositionsAndRanges(setSlidersTo.positions)
+    self:setEulersAndRanges(setSlidersTo.eulers)
+    self:setScalesAndRanges(setSlidersTo.scale)
 
     
     SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
@@ -196,8 +205,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
         Save_And_Load_Info = true
     end)
-    parameter.watch("Storing")
-    Storing = "Only one save/load slot, so be careful. If you want to keep your current save forever, copy the contents of the 'recreateScene' tab to another location."
+
     parameter.action("Save Scene",
     function()
         EasyCraft.saveScene()
@@ -334,10 +342,6 @@ function LivePositioner:setPositionsAndRanges(rangeTable)
         rangeTable.x - rangeTable.range,  
         rangeTable.x + rangeTable.range,
         rangeTable.x)
-    parameter.number("subjectX",
-    xMin,
-    xMax,
-    xFactor)
     parameter.number("subjectY", 
         rangeTable.y - rangeTable.range,  
         rangeTable.y + rangeTable.range,
@@ -366,22 +370,22 @@ end
 
 function LivePositioner:setScalesAndRanges(rangeTable)
     parameter.number("subjectScaleX",
-    0,
+    rangeTable.x - (rangeTable.range * 0.5),
     rangeTable.x + rangeTable.range,
     rangeTable.x)
     parameter.number("subjectScaleY",
-    0,
+    rangeTable.y - (rangeTable.range * 0.5),
     rangeTable.y + rangeTable.range,
     rangeTable.y)
     parameter.number("subjectScaleZ",
-    0,
+    rangeTable.z - (rangeTable.range * 0.5),
     rangeTable.z + rangeTable.range,
     rangeTable.z)
     if rangeTable.scaleAll then
         parameter.number("subjectScaleAll",
-        0,
+        rangeTable.scaleAll - (rangeTable.scaleRange * 0.5),
         rangeTable.scaleRange,
-        1
+        rangeTable.scaleAll
         )
     end
 end
@@ -398,7 +402,7 @@ function LivePositioner:update()
     end
     if subjectScaleX then
         local multiplier = 1
-        if subjectScaleAll and subjectScaleAll > 0 then
+        if subjectScaleAll then
             multiplier = subjectScaleAll
         end
         self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
