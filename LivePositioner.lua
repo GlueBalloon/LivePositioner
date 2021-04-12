@@ -36,9 +36,7 @@ end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
 function LivePositioner:setNonPositioningParameters()
-    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'. Anything that was there before is overwritten forever.\n\nIf you want to preserve a creation for good, manually copy the contents of the 'recreateScene' tab to another location.\n\nYou can also save your camera position only, separate from everything else, to a tab called 'restoreCameraSettings'."
-    
-    TODO: make tab be called 'restoreCameraSettings'
+    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
     
     parameter.boolean("Save And Load Info", true, function(value)
         if value == false then
@@ -82,11 +80,13 @@ end
 
 -- defineLiveParameters(...) sets up the parameter controls
 function LivePositioner:define(thing, pTable, eTable, sTable)
-    local position = pTable or self:rangeTable(0.5,0.5,10.5,1000)
+    local position = pTable or self:rangeTable(0,0,1000)
     local eulers = eTable or self:rangeTable(0,0,0,180)
     local scales = sTable or self:rangeTable(1,1,1,150,1,40)
     LivePositioner:setUpParametersWithMicroSettingOf(false)
 end
+
+
     
 function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
@@ -105,9 +105,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
     end)
     
-    self:setPositionsAndRanges(position)
-    self:setEulersAndRanges(eulers)
-    self:setScalesAndRanges(scales)
+    self:setPositionsAndRanges(self:rangeTable(0,0,0,1000))
+    self:setEulersAndRanges(self:rangeTable(0,0,0,180))
+    self:setScalesAndRanges(self:rangeTable(1,1,1,150,1,40))
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)

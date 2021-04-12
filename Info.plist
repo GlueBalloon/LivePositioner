@@ -12,7 +12,6 @@
 	<array>
 		<string>Main</string>
 		<string>LivePositioner</string>
-		<string>PositioningSettings</string>
 		<string>SubjectSettings</string>
 		<string>OrbitViewer</string>
 		<string>Touches</string>
@@ -21,6 +20,7 @@
 		<string>recreateScene</string>
 		<string>easyCraftRecreate</string>
 		<string>SceneBackup</string>
+		<string>restoreCameraSettings</string>
 	</array>
 	<key>Dependencies</key>
 	<array/>

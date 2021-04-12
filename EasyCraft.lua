@@ -366,7 +366,7 @@ EasyCraft.saveCameraPlacement = function()
     end
     adjustedRy = reduce(viewer.ry)
     local dataString = [[
-    function LivePositioner:useStoredCameraPosition(target)
+    function restoreCameraSettings(target)
         local targetToUse = target or vec3(0,0,0)
         -- parameters after viewer are target position, initial distance, min dist, max dist
         viewer = scene.camera:add(OrbitViewer, targetToUse, 30, 10, 1000)
@@ -381,6 +381,6 @@ EasyCraft.saveCameraPlacement = function()
         viewer.rx = ]]..tostring(viewer.rx).."\n"..[[
         viewer.zoom = ]]..tostring(viewer.zoom).."\n"..[[
         viewer.target = target or vec3]]..tostring(viewer.target).."\nend"
-        saveProjectTab("PositioningSettings",dataString)
-        print("Settings saved to tab \"PositioningSettings\"")
+        saveProjectTab("restoreCameraSettings",dataString)
+        print("Settings saved to tab \"restoreCameraSettings\"")
     end
