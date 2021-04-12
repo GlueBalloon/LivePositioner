@@ -192,7 +192,7 @@ function setup()
     livePositioner = LivePositioner(sceneEntity)
     --livePositioner:define(sceneEntity, ptables, etables, stables)
     --    livePositioner:useTablesIn(characters.liveSettings)
-    setUpParametersWithMicroSettingOf(false, livePositioner)
+ livePositioner:setUpParametersWithMicroSettingOf(false)
     
     if restoreCameraSettings then
         restoreCameraSettings()
@@ -201,6 +201,7 @@ function setup()
     end
 end
 
+--[[
 function setUpParametersWithMicroSettingOf(isMicro, positioner)
     
     if not ModelIndexParameterCurrent then
@@ -236,7 +237,7 @@ function setUpParametersWithMicroSettingOf(isMicro, positioner)
             ModelChooser = #modelSets[currentSetIndex]
         end
         currentModelIndex = ModelChooser
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(currentSetIndex, ModelChooser))
@@ -253,7 +254,7 @@ function setUpParametersWithMicroSettingOf(isMicro, positioner)
                 currentModelIndex = ModelChooser
             end
             currentSetIndex = PackChooser
-            local thisEntity = EasyCraft.entities[entities[currentEntityIndex]]
+            local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
             local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
@@ -278,7 +279,7 @@ function setUpParametersWithMicroSettingOf(isMicro, positioner)
         else
             currentEntityIndex = currentEntityIndex + 1
         end
-        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
     end)
     
     parameter.action("Select Previous Entity", function()
@@ -287,7 +288,7 @@ function setUpParametersWithMicroSettingOf(isMicro, positioner)
         else
             currentEntityIndex = currentEntityIndex - 1
         end
-        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
     end)
     
     parameter.boolean("ShowBounds", false)
@@ -305,12 +306,13 @@ function setUpParametersWithMicroSettingOf(isMicro, positioner)
         currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
         currentE.modelPack = modelSetNames[currentSetIndex]
         currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
-        print(EasyCraft.entities[entities[currentEntityIndex]].position)
-        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex]])
+        print(EasyCraft.entities[entities[currentEntityIndex] ].position)
+        livePositioner:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
     end)
     
 
 end
+]]
 
 function getCurrentEntity()
     return EasyCraft.entities[entities[currentEntityIndex]]

@@ -35,7 +35,9 @@ function LivePositioner:changeSubject(thisSubject)
 end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
+--[[
 function LivePositioner:setNonPositioningParameters()
+
     SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
     
     parameter.boolean("Save And Load Info", true, function(value)
@@ -77,6 +79,7 @@ function LivePositioner:setNonPositioningParameters()
         EasyCraft.saveCameraPlacement()
     end)
 end
+]]
 
 -- defineLiveParameters(...) sets up the parameter controls
 function LivePositioner:define(thing, pTable, eTable, sTable)
@@ -86,9 +89,193 @@ function LivePositioner:define(thing, pTable, eTable, sTable)
     LivePositioner:setUpParametersWithMicroSettingOf(false)
 end
 
+function LivePositioner:setUpParametersWithMicroSettingOf(setting)
+    
+    if not ModelIndexParameterCurrent then
+        ModelIndexParameterCurrent = 1
+        PackIndexParameterCurrent = 1
+    end
+    
+    parameter.clear()
+    
+    WelcomeString = "Welcome to LivePositioner!\n\nUse the parameter controls to make a custom scene with Codea's built-in models.\n\nYou can save your scene, and it will appear as a function called 'recreateScene()' on the the recreateScene tab.\n\nYou can then cut-and-paste that function into any project of your own, and use it for whatever you want."
+    
+    parameter.boolean("Show Welcome", true, function(value)
+        if value == false then
+            output.clear()
+            print(WelcomeString)
+        end
+        Show_Welcome = true
+    end)
+    
+    ModelInfo = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
+    
+    parameter.boolean("Model Choosing Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(ModelInfo)
+        end
+        Model_Choosing_Info = true
+    end)
+    
+    parameter.watch("CurrentModel")
+    parameter.integer("ModelChooser", 1, #modelSets[currentSetIndex], ModelIndexParameterCurrent, function()
+        if ModelChooser > #modelSets[currentSetIndex] then
+            ModelChooser = #modelSets[currentSetIndex]
+        end
+        currentModelIndex = ModelChooser
+        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
+        thisEntity:remove(craft.model)
+        thisEntity:remove(craft.renderer)
+        local newModel = craft.model(getAssetFor(currentSetIndex, ModelChooser))
+        thisEntity.modelPack = modelSetNames[currentSetIndex]
+        thisEntity.modelName = modelSets[currentSetIndex][ModelChooser]
+        thisEntity:add(craft.renderer, newModel)
+    end)
+    
+    parameter.watch("CurrentPack")
+    parameter.integer("PackChooser", 1, #modelSets, PackIndexParameterCurrent, function()
+        if PackIndexParameterCurrent ~= PackChooser then
+            if currentModelIndex > #modelSets[PackChooser] then
+                ModelChooser = #modelSets[PackChooser]
+                currentModelIndex = ModelChooser
+            end
+            currentSetIndex = PackChooser
+            local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
+            thisEntity:remove(craft.model)
+            thisEntity:remove(craft.renderer)
+            local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
+            thisEntity.modelPack = modelSetNames[currentSetIndex]
+            thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
+            thisEntity:add(craft.renderer, newModel)
+            PackIndexParameterCurrent = PackChooser
+            ModelIndexParameterCurrent = ModelChooser
+         --   if self.mostRecentMicroSetting ~= setting then
+          --      self.mostRecentMicroSetting = setting
+                self:setUpParametersWithMicroSettingOf(setting)
+                return
+         --   end
+        end
+    end)
+    
+    PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
+    
+    parameter.boolean("Positioning Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(PositioningFo)
+        end
+        Positioning_Info = true
+    end)
+    
+    
+    parameter.boolean("MicroMode", setting, function(microOn)
+        print(microOn, setting)
+        if microOn ~= setting then
+            print("not ", microOn, setting)
+            self:setUpParametersWithMicroSettingOf(microOn)
+        end
+    end)
+    if setting == false then
+        self:setPositionsAndRanges(self:rangeTable(0,0,0,1000))
+        self:setEulersAndRanges(self:rangeTable(0,0,0,180))
+        self:setScalesAndRanges(self:rangeTable(1,1,1,150,1,40))
+    elseif setting == true then
+        self:setPositionsAndRanges(self:rangeTable(subjectX, subjectY, subjectZ,100))
+        self:setEulersAndRanges(self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,40))
+        self:setScalesAndRanges(self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,10,1,5))
+    end
 
     
+    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
+    
+    parameter.boolean("Save And Load Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(SaveAndLoadFo)
+        end
+        Save_And_Load_Info = true
+    end)
+    parameter.watch("Storing")
+    Storing = "Only one save/load slot, so be careful. If you want to keep your current save forever, copy the contents of the 'recreateScene' tab to another location."
+    parameter.action("Save Scene",
+    function()
+        EasyCraft.saveScene()
+        EasyCraft.saveCameraPlacement()
+    end)
+    
+    parameter.action("Load Saved Scene",
+    function()
+        
+        entities = {}
+        currentEntityIndex = 1
+        currentSetIndex = 1
+        currentModelIndex = 1
+        
+        local destroyUs = {}
+        for k, v in pairs(EasyCraft.entities) do
+            destroyUs[k] = v
+        end
+        -- EasyCraft.entities = {}
+        
+        local newSceneParts
+        if easyCraftRecreate then
+            newSceneParts = easyCraftRecreate()
+        end
+    end)
+    
+    parameter.action("Save Just Camera Position", function()
+        EasyCraft.saveCameraPlacement()
+    end)
+    
+    parameter.watch("Selecting")
+    Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
+    
+    parameter.action("Select Next Entity", function()
+        if currentEntityIndex == #entities then
+            currentEntityIndex = 1
+        else
+            currentEntityIndex = currentEntityIndex + 1
+        end
+        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    
+    parameter.action("Select Previous Entity", function()
+        if currentEntityIndex == 1 then
+            currentEntityIndex = #entities
+        else
+            currentEntityIndex = currentEntityIndex - 1
+        end
+        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    
+    parameter.boolean("ShowBounds", false)
+    
+    
+    parameter.watch("Adding")
+    Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
+    parameter.action("New Entity", function()
+        local idNumber = math.random(1,99999999)
+        local newThing = EasyCraft.makeAThing(idNumber)
+        table.insert(entities, newThing.name)
+        currentEntityIndex = #entities
+        local currentE = getCurrentEntity()
+        currentE:remove(craft.renderer)
+        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
+        currentE.modelPack = modelSetNames[currentSetIndex]
+        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
+        print(EasyCraft.entities[entities[currentEntityIndex] ].position)
+        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+    end)
+    
+    
+    --self.mostRecentMicroSetting = setting
+end
+
+    
+--[[
 function LivePositioner:setUpParametersWithMicroSettingOf(setting)
+    
     PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
     
     parameter.boolean("Positioning Info", true, function(value)
@@ -105,10 +292,17 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
     end)
     
+
+    
     self:setPositionsAndRanges(self:rangeTable(0,0,0,1000))
-    self:setEulersAndRanges(self:rangeTable(0,0,0,180))
+    if setting == false then
+        self:setEulersAndRanges(self:rangeTable(0,0,0,180))
+    elseif setting == true then
+        self:setEulersAndRanges(self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,20))
+    end
     self:setScalesAndRanges(self:rangeTable(1,1,1,150,1,40))
 end
+]]
 
 function LivePositioner:useTablesIn(tableOfPositions)
     subjectX, subjectY, subjectZ = tableOfPositions.position.x, tableOfPositions.position.y, tableOfPositions.position.z
