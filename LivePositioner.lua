@@ -227,7 +227,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         for k, v in pairs(EasyCraft.entities) do
             destroyUs[k] = v
         end
-        -- EasyCraft.entities = {}
+        EasyCraft.entities = {}
         
         local newSceneParts
         if easyCraftRecreate then
@@ -266,7 +266,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("Adding")
     Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
     parameter.action("New Entity", function()
-        local idNumber = math.random(1,99999999)
+        local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         table.insert(entities, newThing.name)
         currentEntityIndex = #entities
@@ -277,8 +277,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
         print(EasyCraft.entities[entities[currentEntityIndex] ].position)
         self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
-    end)
-    
+    end)    
     
     --self.mostRecentMicroSetting = setting
 end
