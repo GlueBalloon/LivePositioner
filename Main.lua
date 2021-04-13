@@ -12,9 +12,10 @@ function setup()
     -- Set the camera position
     scene.camera.position = vec3(0,0,-10)
     --scene.camera:add(OrbitViewer, vec3(0,5,0), 23, 6, 80)
-    
+    EasyCraft.setUpBloomingEnvironment()
     -- use scene to make a new entity
     sceneEntity = EasyCraft.makeAThing("startingThing")
+
     
     entities = {}
     currentEntityIndex = 1
@@ -188,17 +189,19 @@ function setup()
     
    -- clearAndRefreshParameters()
 
-    -- Initialize a LivePositioner with the entity to be positioned
-    livePositioner = LivePositioner(sceneEntity)
-    --livePositioner:define(sceneEntity, ptables, etables, stables)
-    --    livePositioner:useTablesIn(characters.liveSettings)
- livePositioner:setUpParametersWithMicroSettingOf(false)
-    
-    if restoreCameraSettings then
-        restoreCameraSettings()
-    else
-        viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
-    end
+            -- Initialize a LivePositioner with the entity to be positioned
+            livePositioner = LivePositioner(sceneEntity)
+            --livePositioner:define(sceneEntity, ptables, etables, stables)
+            --    livePositioner:useTablesIn(characters.liveSettings)
+            livePositioner:setUpParametersWithMicroSettingOf(false)
+            
+            if restoreCameraSettings then
+                restoreCameraSettings()
+            else
+                viewer = scene.camera:add(OrbitViewer, EasyCraft.entities[entities[currentEntityIndex]].position, 23, 6, 80)
+            end
+                    
+                    EasyCraft.makeAThing()
 end
 
 --[[

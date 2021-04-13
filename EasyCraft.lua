@@ -221,7 +221,44 @@ EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotati
     newEntity.modelName = modelName or "Adventurer.obj"
     newEntity.model = craft.model(asset.builtin[newEntity.modelPack][newEntity.modelName])
     EasyCraft.entities[newEntity.name] = newEntity
+    
+    local oldMaterial = newEntity.material
+    material = craft.material(asset.builtin.Materials.Basic)
+    newEntity.material = material
+    material.blendMode = ADDITIVE
+    -- Combine color and intensity for HDR effects
+    Intensity = 1.5
+    local   effectColor = vec3(200/255, 90/255, 30/255) * Intensity
+    newEntity.material.diffuse = effectColor
+    local effectIntensity = vec3(100/255, 90/255, 130/255) * Intensity
+    newEntity.material.diffuse = effectIntensity
+    newEntity:remove(craft.material)
     return newEntity
+end
+
+EasyCraft.setUpBloomingEnvironment = function()
+    -- Setup lighting
+    scene.ambientColor = color(63, 63, 63, 255)
+    sunLight = scene.sun:get(craft.light)
+    sunLight.intensity = 0.7
+    scene.sun.rotation = quat.eulerAngles(80, 0, 0)
+    
+    -- Setup bloom post processing effect
+    cameraComponent = scene.camera:get(craft.camera)
+    cameraComponent.hdr = true
+    cameraComponent.colorTextureEnabled = true
+    bloom = craft.bloomEffect()
+    cameraComponent:addPostEffect(bloom)
+    bloom.threshold = 5
+    bloom.intensity = 3
+    bloom.softThreshold = 0.8
+    bloom.iterations = 1
+    --[[
+    bloom.threshold = 1.5
+    bloom.intensity = 1.2
+    bloom.softThreshold = 0.4
+    bloom.iterations = 8
+    ]]
 end
 
 EasyCraft.stringWrappingStringInFunctionNamed = function(functionName, dataString)
