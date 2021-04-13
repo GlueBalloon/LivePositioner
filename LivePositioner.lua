@@ -91,10 +91,12 @@ end
 
 function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
+    --[[
     if not ModelIndexParameterCurrent then
         ModelIndexParameterCurrent = 1
         PackIndexParameterCurrent = 1
     end
+    ]]
     
     parameter.clear()
     
@@ -119,7 +121,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     end)
     
     parameter.watch("CurrentModel")
-    parameter.integer("ModelChooser", 1, #modelSets[currentSetIndex], ModelIndexParameterCurrent, function()
+    parameter.watch("CurrentPack")
+    parameter.integer("ModelChooser", 1, #modelSets[currentSetIndex], currentModelIndex, function()
         if ModelChooser > #modelSets[currentSetIndex] then
             ModelChooser = #modelSets[currentSetIndex]
         end
@@ -133,7 +136,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.watch("CurrentPack")
+
     parameter.integer("PackChooser", 1, #modelSets, PackIndexParameterCurrent, function()
         if PackIndexParameterCurrent ~= PackChooser then
             if currentModelIndex > #modelSets[PackChooser] then
@@ -149,7 +152,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
             thisEntity:add(craft.renderer, newModel)
             PackIndexParameterCurrent = PackChooser
-            ModelIndexParameterCurrent = ModelChooser
+            currentModelIndex = ModelChooser
          --   if self.mostRecentMicroSetting ~= setting then
           --      self.mostRecentMicroSetting = setting
                 self:setUpParametersWithMicroSettingOf(setting)

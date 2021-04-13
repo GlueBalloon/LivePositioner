@@ -249,7 +249,8 @@ end
 
 EasyCraft.stringForEasyCraftRecreatingEntity = function(entity)
     return [[   
-    local newEntity = EasyCraft.makeAThing("]]..entity.name..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)..[[, vec3]]..tostring(entity.sliderEulers)..[[) ]]
+    local newEntity = EasyCraft.makeAThing("]]..entity.name..[[", "]]..entity.modelPack..[[", "]]..entity.modelName..[[", vec3]]..tostring(entity.position)..[[, vec3]]..tostring(entity.eulerAngles)..[[, vec3]]..tostring(entity.scale)..[[, vec3]]..tostring(entity.sliderEulers)..[[) 
+newEntity.rotation = quat.eulerAngles]]..tostring(entity.sliderEulers).."\n"
 end
 
 EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
