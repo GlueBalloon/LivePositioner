@@ -136,7 +136,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity:add(craft.renderer, newModel)
     end)
     
-
     parameter.integer("PackChooser", 1, #modelSets, PackIndexParameterCurrent, function()
         if PackIndexParameterCurrent ~= PackChooser then
             if currentModelIndex > #modelSets[PackChooser] then
@@ -187,7 +186,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     elseif setting == false then
         setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ, 1000)
         setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,180)
-        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,150,subjectScaleAll,40)
+        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,600,subjectScaleAll,40)
     elseif setting == true then
         setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ,50)
         setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,40)
@@ -217,7 +216,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.action("Load Saved Scene",
     function()
-        
         entities = {}
         currentEntityIndex = 1
         currentSetIndex = 1
@@ -261,11 +259,11 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     end)
     
     parameter.boolean("ShowBounds", false)
-    
-    
+       
     parameter.watch("Adding")
     Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
-    parameter.action("New Entity", function()
+  
+          parameter.action("New Entity", function()
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         table.insert(entities, newThing.name)
