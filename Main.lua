@@ -360,10 +360,12 @@ function update(dt)
     -- Update the LivePositioner
     livePositioner:update()
     
-    if ShowBounds then -- bounds don't scale
-        -- for k,v in pairs(modelSets[currentSetIndex]) do
+    if ShowBounds then -- bounds don't scale                                      
         local b = EasyCraft.entities[entities[currentEntityIndex]]:get(craft.renderer).model.bounds
-        b2 = bounds(b.min, b.max)
+                                                        local boundsScaledBase = vec3(b.max.x * EasyCraft.entities[entities[currentEntityIndex]].scale.x, b.max.y * EasyCraft.entities[entities[currentEntityIndex]].scale.y, b.max.z * EasyCraft.entities[entities[currentEntityIndex]].scale.z)
+                                                                                local boundsMin =   vec3(b.min.x * EasyCraft.entities[entities[currentEntityIndex]].scale.x, b.min.y * EasyCraft.entities[entities[currentEntityIndex]].scale.y, b.min.z * EasyCraft.entities[entities[currentEntityIndex]].scale.z)
+                                                                                local boundsMax =   vec3(boundsScaledBase.x, boundsScaledBase.y,  boundsScaledBase.z)
+        b2 = bounds(boundsMin, boundsMax)
         b2:translate(EasyCraft.entities[entities[currentEntityIndex]].position)
         scene.debug:bounds(b2, color(255,255,255,255))
         --   end

@@ -1,4 +1,5 @@
 function backupRecreate()
+--function easyCraftRecreate()
     
     local scene = scene
     if not scene then

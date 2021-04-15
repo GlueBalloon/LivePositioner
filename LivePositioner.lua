@@ -20,6 +20,9 @@ end
 
 function LivePositioner:changeSubject(thisSubject) 
     print(thisSubject)
+    if self.subject and self.subject.material then
+        self.subject.material.diffuse = vec3(1,1,1)
+    end
     self.subjectChanging = true
     self.subject = thisSubject
     subjectScaleAll = 1
@@ -32,6 +35,18 @@ function LivePositioner:changeSubject(thisSubject)
     end
     subjectScaleX, subjectScaleY, subjectScaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
     self.subjectChanging = false
+    --[[
+    --blooming blooming
+    local material = craft.material(asset.builtin.Materials.Basic)
+    self.subject.material = material
+    material.blendMode = ADDITIVE
+    -- Combine color and intensity for HDR effects
+    local Intensity = 1.5
+    local effectColor = vec3(200/255, 90/255, 30/255) * Intensity
+    self.subject.material.diffuse = effectColor
+    local effectIntensity = vec3(100/255, 90/255, 130/255) * Intensity
+    self.subject.material.diffuse = effectIntensity
+    ]]
 end
 
 -- setNonPositioningParameters sets up the watched variables and the button for saving the current settings
