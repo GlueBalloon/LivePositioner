@@ -66,7 +66,7 @@ function update(dt)
     livePositioner:update()
 
     local currentBaby = getCurrentEntity()
-    if ShowBounds then -- bounds don't scale
+    if ShowBoundingBox then -- bounds don't scale
         local b = currentBaby:get(craft.renderer).model.bounds
         local boundsScaledBase = vec3(b.max.x * currentBaby.scale.x, b.max.y * currentBaby.scale.y, b.max.z * currentBaby.scale.z)
         local boundsMin =   vec3(b.min.x * currentBaby.scale.x, b.min.y * currentBaby.scale.y, b.min.z * currentBaby.scale.z)

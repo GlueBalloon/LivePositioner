@@ -158,15 +158,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         MorePositioningInfo = false
     end)
     
-    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
-    
-    parameter.boolean("Save And Load Info", true, function(value)
-        if value == false then
-            output.clear()
-            print(SaveAndLoadFo)
-        end
-        Save_And_Load_Info = true
-    end)
+    parameter.watch("__________Saving__________")
+    __________Saving__________ = "Save early and often!"
 
     parameter.action("Save Scene",
     function()
@@ -202,11 +195,21 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         EasyCraft.saveCameraPlacement()
     end)
     
-    parameter.watch("Selecting")
-    Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
+    SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
+    
+    parameter.boolean("MoreSaveInfo", false, function(value)
+        if value == true then
+            output.clear()
+            print(SaveAndLoadFo)
+        end
+        MoreSaveInfo = false
+    end)
+    
+    parameter.watch("__________Selecting__________")
+    __________Selecting__________ = "Select the model to work on."
     
     parameter.action("Select Next Entity", function()
-        ShowBounds = true
+        ShowBoundingBox = true
         if self.currentEntityIndex == #EasyCraft.entityNames then
             self.currentEntityIndex = 1
         else
@@ -216,7 +219,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     end)
     
     parameter.action("Select Previous Entity", function()
-        ShowBounds = true
+        ShowBoundingBox = true
         if self.currentEntityIndex == 1 then
             self.currentEntityIndex = #EasyCraft.entityNames
         else
@@ -225,13 +228,14 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
     end)
     
-    parameter.boolean("ShowBounds", false)
+    parameter.boolean("ShowBoundingBox", false)
        
-    parameter.watch("Adding")
-    Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
-  
-         
+    
+    parameter.watch("__________Creating__________")
+    __________Creating__________ = "Make a new entity."
+   
     parameter.action("New Entity", function()
+        ShowBoundingBox = true
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         self.currentEntityIndex = #EasyCraft.entityNames
@@ -240,7 +244,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
-        print(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ].position)
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
     end)    
 end
