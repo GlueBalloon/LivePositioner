@@ -37,7 +37,7 @@ function getCurrentEntity()
 end
 
 function getAssetFor(packIndex, nameIndex)
-  --  return asset.builtin[modelSetNames[packIndex]][modelSets[packIndex][nameIndex]]
+    return asset.builtin[livePositioner.modelSetNames[packIndex] ][livePositioner.modelSets[packIndex][nameIndex] ]
 end
 
 function filenameFromModel(model)
@@ -82,8 +82,8 @@ end
 function draw()
     update(DeltaTime)  
     scene:draw()
-    CurrentModel = modelSets[currentSetIndex][currentModelIndex]
-    CurrentPack = modelSetNames[currentSetIndex]
+    CurrentModel = livePositioner.modelSets[livePositioner.currentSetIndex][livePositioner.currentModelIndex]
+    CurrentPack = livePositioner.modelSetNames[livePositioner.currentSetIndex]
 end
 
 function touched(touch)

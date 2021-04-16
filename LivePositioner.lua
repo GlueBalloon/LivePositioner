@@ -8,10 +8,9 @@ LivePositioner = class()
 -- If not given positionings, it supplies default initial values.
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
 function LivePositioner:init(firstThing, modelSets, modelSetNames)
-    self.currentEntityIndex = 1
-
-    
-    self.modelSets = {}
+    self.currentEntityIndex = 1    
+    self.modelSets = modelSets or {}
+    self.modelSetNames = modelSetNames or {}
     self.currentSetIndex = 1
     self.currentModelIndex = 1
     self:changeSubject(firstThing)
@@ -72,36 +71,36 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.watch("CurrentModel")
     parameter.watch("CurrentPack")
-    parameter.integer("ModelChooser", 1, #modelSets[currentSetIndex], currentModelIndex, function()
-        if ModelChooser > #modelSets[currentSetIndex] then
-            ModelChooser = #modelSets[currentSetIndex]
+    parameter.integer("ModelChooser", 1, #self.modelSets[self.currentSetIndex], self.currentModelIndex, function()
+        if ModelChooser > #self.modelSets[self.currentSetIndex] then
+            ModelChooser = #self.modelSets[self.currentSetIndex]
         end
-        currentModelIndex = ModelChooser
+        self.currentModelIndex = ModelChooser
         local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
-        local newModel = craft.model(getAssetFor(currentSetIndex, ModelChooser))
-        thisEntity.modelPack = modelSetNames[currentSetIndex]
-        thisEntity.modelName = modelSets[currentSetIndex][ModelChooser]
+        local newModel = craft.model(getAssetFor(self.currentSetIndex, ModelChooser))
+        thisEntity.modelPack = self. modelSetNames[self.currentSetIndex]
+        thisEntity.modelName = self.modelSets[self.currentSetIndex][ModelChooser]
         thisEntity:add(craft.renderer, newModel)
     end)
     
-    parameter.integer("PackChooser", 1, #modelSets, PackIndexParameterCurrent, function()
+    parameter.integer("PackChooser", 1, #self.modelSets, PackIndexParameterCurrent, function()
         if PackIndexParameterCurrent ~= PackChooser then
-            if currentModelIndex > #modelSets[PackChooser] then
-                ModelChooser = #modelSets[PackChooser]
-                currentModelIndex = ModelChooser
+            if self.currentModelIndex > #self.modelSets[PackChooser] then
+                ModelChooser = #self.modelSets[PackChooser]
+                self.currentModelIndex = ModelChooser
             end
-            currentSetIndex = PackChooser
+            self.currentSetIndex = PackChooser
             local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
-            local newModel = craft.model(getAssetFor(currentSetIndex, currentModelIndex))
-            thisEntity.modelPack = modelSetNames[currentSetIndex]
-            thisEntity.modelName = modelSets[currentSetIndex][currentModelIndex]
+            local newModel = craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex))
+            thisEntity.modelPack = self. modelSetNames[self.currentSetIndex]
+            thisEntity.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
             thisEntity:add(craft.renderer, newModel)
             PackIndexParameterCurrent = PackChooser
-            currentModelIndex = ModelChooser
+            self.currentModelIndex = ModelChooser
          --   if self.mostRecentMicroSetting ~= setting then
           --      self.mostRecentMicroSetting = setting
                 self:setUpParametersWithMicroSettingOf(setting)
@@ -176,8 +175,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         EasyCraft.entities = {}
         EasyCraft.entityNames = {}
         currentEntityIndex = 1
-        currentSetIndex = 1
-        currentModelIndex = 1
+        self.currentSetIndex = 1
+        self.currentModelIndex = 1
         
         --not sure why I'm capturing the return value here
         local newSceneParts
@@ -232,9 +231,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentEntityIndex = #entities
         local currentE = getCurrentEntity()
         currentE:remove(craft.renderer)
-        currentE:add(craft.renderer, craft.model(getAssetFor(currentSetIndex, currentModelIndex)))
-        currentE.modelPack = modelSetNames[currentSetIndex]
-        currentE.modelName = modelSets[currentSetIndex][currentModelIndex]
+        currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
+        currentE.modelPack = self. modelSetNames[self.currentSetIndex]
+        currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
         print(EasyCraft.entities[entities[currentEntityIndex] ].position)
         self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
     end)    
