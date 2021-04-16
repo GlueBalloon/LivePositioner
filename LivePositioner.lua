@@ -17,7 +17,18 @@ function LivePositioner:init(firstThing, modelSets, modelSetNames)
 end
 
 function LivePositioner:changeSubject(thisSubject) 
-    print(thisSubject)
+    for i, v in ipairs(self.modelSetNames) do
+        if v == thisSubject.modelPack then
+            self.currentSetIndex = i
+            break
+        end
+    end
+    for i, v in ipairs(self.modelSets[self.currentSetIndex]) do
+        if v == thisSubject.modelName then
+            self.currentModelIndex = i
+            break
+        end
+    end
     if self.subject and self.subject.material then
         self.subject.material.diffuse = vec3(1,1,1)
     end
@@ -66,7 +77,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.watch("__________Models__________")
     __________Models__________ = "Choose any built-in model."
-    
+    --make the choosers update with selection correctly
     parameter.integer("ModelChooser", 1, #self.modelSets[self.currentSetIndex], self.currentModelIndex, function()
         if ModelChooser > #self.modelSets[self.currentSetIndex] then
             ModelChooser = #self.modelSets[self.currentSetIndex]
@@ -76,7 +87,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(self.currentSetIndex, ModelChooser))
-        thisEntity.modelPack = self. modelSetNames[self.currentSetIndex]
+        thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
         thisEntity.modelName = self.modelSets[self.currentSetIndex][ModelChooser]
         thisEntity:add(craft.renderer, newModel)
     end)
@@ -92,16 +103,13 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
             local newModel = craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex))
-            thisEntity.modelPack = self. modelSetNames[self.currentSetIndex]
+            thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
             thisEntity.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
             thisEntity:add(craft.renderer, newModel)
             PackIndexParameterCurrent = PackChooser
             self.currentModelIndex = ModelChooser
-         --   if self.mostRecentMicroSetting ~= setting then
-          --      self.mostRecentMicroSetting = setting
-                self:setUpParametersWithMicroSettingOf(setting)
-                return
-         --   end
+            self:setUpParametersWithMicroSettingOf(setting)
+            return
         end
     end)
     
@@ -169,6 +177,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             self.currentEntityIndex = self.currentEntityIndex + 1
         end
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        PackChooser = self.currentSetIndex
+        ModelChooser = self.currentModelIndex
     end)
     
     parameter.action("Select Previous Entity", function()
@@ -179,6 +189,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             self.currentEntityIndex = self.currentEntityIndex - 1
         end
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        PackChooser = self.currentSetIndex
+        ModelChooser = self.currentModelIndex
     end)
     
     parameter.boolean("HideSelectionBox", false)

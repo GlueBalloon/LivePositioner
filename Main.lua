@@ -1,8 +1,9 @@
 
 -- LivePositioner by ubergoober
 
---bugs: bounds don't scale
-
+--[[bugs: 
+ - When using selection controls, model chooser slider maximum amount doesn't change to match number of items in selected entity's model pack
+]]
 
 function setup()
     perspective(45,WIDTH/HEIGHT,0.1,100000000)
