@@ -231,20 +231,37 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.action("Load Saved Scene",
     function()
-        entities = {}
+        --jumping through some hoops to try to prevent a crash
+        --that may be caused by destroying entities willy-nilly
+        
+        --go through all entity tables and make the entities keys in a new table
+        --this prevents duplicating entities if the same ones are in each table
+local makeUsKeys = {}
+local destroyUs = {}
+for i, name in ipairs(EasyCraft.entityNames) do
+    local deadMan = EasyCraft.entities[name]
+EasyCraft.entities[name] = nil
+deadMan:destroy()
+end
+        
+        --reset entity tables and reset indexes
+        EasyCraft.entities = {}
+EasyCraft.entityNames = {}
         currentEntityIndex = 1
         currentSetIndex = 1
         currentModelIndex = 1
         
-        local destroyUs = {}
-        for k, v in pairs(EasyCraft.entities) do
-            destroyUs[k] = v
-        end
-        EasyCraft.entities = {}
-        
+        --not sure why I'm capturing the return value here
         local newSceneParts
         if easyCraftRecreate then
             newSceneParts = easyCraftRecreate()
+        end
+        
+        --now nil out the values, and the destroy the entities used as keys
+        for entity, emptyString in pairs(destroyUs) do
+            print(entity, emptyString)
+            destroyUs[entity] = nil
+            entity:destroy()
         end
     end)
     
@@ -256,6 +273,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     Selecting = "The selected entity can be positioned and changed. ShowBounds highlights the current selection."
     
     parameter.action("Select Next Entity", function()
+        ShowBounds = true
         if currentEntityIndex == #entities then
             currentEntityIndex = 1
         else
@@ -265,6 +283,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     end)
     
     parameter.action("Select Previous Entity", function()
+        ShowBounds = true
         if currentEntityIndex == 1 then
             currentEntityIndex = #entities
         else
