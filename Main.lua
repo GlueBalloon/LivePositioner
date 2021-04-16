@@ -33,7 +33,7 @@ function setup()
 end
 
 function getCurrentEntity()
-    return EasyCraft.entities[ EasyCraft.entityNames[currentEntityIndex] ]
+    return EasyCraft.entities[ EasyCraft.entityNames[livePositioner.currentEntityIndex] ]
 end
 
 function getAssetFor(packIndex, nameIndex)
@@ -74,7 +74,6 @@ function update(dt)
         b2 = bounds(boundsMin, boundsMax)
         b2:translate(currentBaby.position)
         scene.debug:bounds(b2, color(255,255,255,255))
-        --   end
     end
 end
 

@@ -165,11 +165,13 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.action("Load Saved Scene", function()
 
+        --[[
         for i, name in ipairs(EasyCraft.entityNames) do
             local deadMan = EasyCraft.entities[name]
             EasyCraft.entities[name] = nil
             deadMan:destroy()
         end
+        ]]
         
         --reset entity tables and reset indexes
         EasyCraft.entities = {}
@@ -182,13 +184,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         local newSceneParts
         if easyCraftRecreate then
             newSceneParts = easyCraftRecreate()
-        end
-        
-        --now nil out the values, and the destroy the entities used as keys
-        for entity, emptyString in pairs(destroyUs) do
-            print(entity, emptyString)
-            destroyUs[entity] = nil
-            entity:destroy()
         end
     end)
     
@@ -224,7 +219,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("Adding")
     Adding = "Tapping 'New Entity' adds a duplicate of the current selection to the scene."
   
-          parameter.action("New Entity", function()
+         
+    parameter.action("New Entity", function()
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         self.currentEntityIndex = #EasyCraft.entityNames
