@@ -6,23 +6,11 @@
 
 function setup()
     
-    -- Generic stuff:
-    -- Create a new craft scene
     scene = craft.scene()
-    -- Set the camera position
     scene.camera.position = vec3(0,0,-10)
-    --scene.camera:add(OrbitViewer, vec3(0,5,0), 23, 6, 80)
     EasyCraft.setUpBloomingEnvironment()
-    -- use scene to make a new entity
-    sceneEntity = EasyCraft.makeAThing("startingThing")
-
-    currentEntityIndex = 1
+    firstEntity = EasyCraft.makeAThing("startingThing")
     
-    modelSets = {}
-    currentSetIndex = 1
-    currentModelIndex = 1
-    
-    modelSets = {}
     local characters = modelTableFromPack(asset.builtin.Blocky_Characters)
     local nature = modelTableFromPack(asset.builtin.Nature)
     local castles = modelTableFromPack(asset.builtin.CastleKit)
@@ -30,20 +18,17 @@ function setup()
     local primitive = modelTableFromPack(asset.builtin.Primitives)
     local racing = modelTableFromPack(asset.builtin.RacingKit)
     local watercraft = modelTableFromPack(asset.builtin.Watercraft)
-    modelSets = {characters, nature, castles, space, primitive, racing, watercraft}
-    modelSetNames = {"Blocky_Characters", "Nature", "CastleKit", "SpaceKit", "Primitives", "RacingKit", "Watercraft"}
     
+    local packs = {characters, nature, castles, space, primitive, racing, watercraft}
+    local packNames = {"Blocky_Characters", "Nature", "CastleKit", "SpaceKit", "Primitives", "RacingKit", "Watercraft"}
     
-    local currentEntity = getCurrentEntity()          
-    currentEntity:remove(craft.renderer)
-    currentEntity:add(craft.renderer, craft.model(getAssetFor(1, 1)))
-    livePositioner = LivePositioner(sceneEntity)
+    livePositioner = LivePositioner(firstEntity, packs, packNames)
     livePositioner:setUpParametersWithMicroSettingOf(false)
     
     if restoreCameraSettings then
         restoreCameraSettings()
     else
-        viewer = scene.camera:add(OrbitViewer, currentEntity.position, 23, 6, 80)
+        viewer = scene.camera:add(OrbitViewer, getCurrentEntity().position, 23, 6, 80)
     end
 end
 
@@ -70,16 +55,6 @@ function modelTableFromPack(assetPack)
         end
     end
     return modelTable
-end
-
-function setViewer(givenScene)
-    touches.handlers = {}
-    -- Add classname OrbitViewer to the camera as a component
-    -- Note that other parameters must be passed in as well:
-    -- targetPoint, startingDistance, minDistance, and maxDistance
-    givenScene.camera:add(OrbitViewer, vec3(0,5,0), 23, 6, 80)
-    -- Change the output text and the screen title
-    printExplanation(nameString)
 end
 
 function update(dt)

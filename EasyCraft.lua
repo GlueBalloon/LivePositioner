@@ -221,14 +221,7 @@ EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotati
     newEntity.modelName = modelName or "Adventurer.obj"
     newEntity.model = craft.model(asset.builtin[newEntity.modelPack][newEntity.modelName])
     EasyCraft.entities[newEntity.name] = newEntity
-    
-    --[[
-    material = craft.material(asset.builtin.Materials.Basic)
-    newEntity.material = material
-    newEntity.material.map = readImage(asset.builtin.Blocky_Characters.AdventurerSkin)
-    newEntity.material.diffuse = vec3(2.5,1.5,4)
-    ]]
-    
+
     return newEntity
 end
 
@@ -373,18 +366,6 @@ end]]
 end
 
 EasyCraft.saveCameraPlacement = function()
-    --[[
-    local rySignRememberer = 1
-    local adjustedRy = viewer.ry
-    if viewer.ry < 0 then
-        rySignRememberer = -1
-    end
-    if viewer.ry > 180 then
-        adjustedRy = ((viewer.ry % 180) - 180) * rySignRememberer
-    elseif viewer.ry < -180 then
-        adjustedRy = 180 - 180 - (viewer.ry % 180)
-    end
-    ]]
     function reduce(ang)
         local a=ang%180
         if (ang//180)%2~=0 then

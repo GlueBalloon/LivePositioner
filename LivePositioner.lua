@@ -7,8 +7,14 @@ LivePositioner = class()
 -- LivePositioner can be initialized with nothing, with just an entity, with an entity plus intial positioning instructions, or any combination thereof
 -- If not given positionings, it supplies default initial values.
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
-function LivePositioner:init(thing)
-    self:changeSubject(thing)
+function LivePositioner:init(firstThing, modelSets, modelSetNames)
+    self.currentEntityIndex = 1
+
+    
+    self.modelSets = {}
+    self.currentSetIndex = 1
+    self.currentModelIndex = 1
+    self:changeSubject(firstThing)
 end
 
 function LivePositioner:changeSubject(thisSubject) 
@@ -158,24 +164,17 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         EasyCraft.saveCameraPlacement()
     end)
     
-    parameter.action("Load Saved Scene",
-    function()
-        --jumping through some hoops to try to prevent a crash
-        --that may be caused by destroying entities willy-nilly
-        
-        --go through all entity tables and make the entities keys in a new table
-        --this prevents duplicating entities if the same ones are in each table
-local makeUsKeys = {}
-local destroyUs = {}
-for i, name in ipairs(EasyCraft.entityNames) do
-    local deadMan = EasyCraft.entities[name]
-EasyCraft.entities[name] = nil
-deadMan:destroy()
-end
+    parameter.action("Load Saved Scene", function()
+
+        for i, name in ipairs(EasyCraft.entityNames) do
+            local deadMan = EasyCraft.entities[name]
+            EasyCraft.entities[name] = nil
+            deadMan:destroy()
+        end
         
         --reset entity tables and reset indexes
         EasyCraft.entities = {}
-EasyCraft.entityNames = {}
+        EasyCraft.entityNames = {}
         currentEntityIndex = 1
         currentSetIndex = 1
         currentModelIndex = 1
