@@ -24,14 +24,14 @@ function LivePositioner:changeSubject(thisSubject)
     self.subjectChanging = true
     self.subject = thisSubject
     subjectScaleAll = 1
-    subjectX, subjectY, subjectZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
+    entityX, entityY, entityZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
     if self.subject.sliderEulers then
-        subjectEulerX, subjectEulerY, subjectEulerZ = self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z
-        self.subject.rotation = quat.eulerAngles(subjectEulerX, subjectEulerY, subjectEulerZ)
+        eulerX, eulerY, eulerZ = self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z
+        self.subject.rotation = quat.eulerAngles(eulerX, eulerY, eulerZ)
     else
-        subjectEulerX, subjectEulerY, subjectEulerZ = self.subject.eulerAngles.x, self.subject.eulerAngles.y, self.subject.eulerAngles.z
+        eulerX, eulerY, eulerZ = self.subject.eulerAngles.x, self.subject.eulerAngles.y, self.subject.eulerAngles.z
     end
-    subjectScaleX, subjectScaleY, subjectScaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
+    scaleX, scaleY, scaleZ = thisSubject.scale.x, thisSubject.scale.y, thisSubject.scale.z
     self.subjectChanging = false
 end
 
@@ -122,18 +122,18 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     __________Positioning__________ = "Move 'em, spin 'em, size 'em!"
     
     local setSlidersTo = {}
-    if not subjectX then
+    if not entityX then
         setSlidersTo.positions = self:rangeTable(0,0,0,1000)
         setSlidersTo.eulers = self:rangeTable(0,0,0,180)
         setSlidersTo.scale = self:rangeTable(1,1,1,150,1,40)
     elseif setting == false then
-        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ, 1000)
-        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,180)
-        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,600,subjectScaleAll,40)
+        setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ, 1000)
+        setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,180)
+        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,600,subjectScaleAll,40)
     elseif setting == true then
-        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ,30)
-        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,30)
-        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,4,subjectScaleAll,2)
+        setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ,30)
+        setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,30)
+        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,4,subjectScaleAll,2)
     end
     
     self:setPositionsAndRanges(setSlidersTo.positions)
@@ -246,9 +246,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)
-    subjectX, subjectY, subjectZ = tableOfPositions.position.x, tableOfPositions.position.y, tableOfPositions.position.z
-    subjectEulerX, subjectEulerY, subjectEulerZ = tableOfPositions.eulerAngles.x, tableOfPositions.eulerAngles.y, tableOfPositions.eulerAngles.z
-    subjectScaleX, subjectScaleY, subjectScaleZ = tableOfPositions.scale.x, tableOfPositions.scale.y, tableOfPositions.scale.z
+    entityX, entityY, entityZ = tableOfPositions.position.x, tableOfPositions.position.y, tableOfPositions.position.z
+    eulerX, eulerY, eulerZ = tableOfPositions.eulerAngles.x, tableOfPositions.eulerAngles.y, tableOfPositions.eulerAngles.z
+    scaleX, scaleY, scaleZ = tableOfPositions.scale.x, tableOfPositions.scale.y, tableOfPositions.scale.z
 end
 
 -- rangeTable(...) creates tables in the format required by the initializer and the defineLiveParameters(..) function
@@ -271,15 +271,15 @@ end
 
 
 function LivePositioner:setPositionsAndRanges(rangeTable)
-    parameter.number("subjectX", 
+    parameter.number("entityX", 
         rangeTable.x - rangeTable.range,  
         rangeTable.x + rangeTable.range,
         rangeTable.x)
-    parameter.number("subjectY", 
+    parameter.number("entityY", 
         rangeTable.y - rangeTable.range,  
         rangeTable.y + rangeTable.range,
         rangeTable.y)
-    parameter.number("subjectZ", 
+    parameter.number("entityZ", 
         rangeTable.z - rangeTable.range,  
         rangeTable.z + rangeTable.range,
         rangeTable.z)
@@ -287,30 +287,30 @@ end
 
 
 function LivePositioner:setEulersAndRanges(rangeTable)
-    parameter.number("subjectEulerX", 
+    parameter.number("eulerX", 
         rangeTable.x - rangeTable.range,  
         rangeTable.x + rangeTable.range,
         rangeTable.x)
-    parameter.number("subjectEulerY", 
+    parameter.number("eulerY", 
         rangeTable.y - rangeTable.range,  
         rangeTable.y + rangeTable.range,
         rangeTable.y)
-    parameter.number("subjectEulerZ", 
+    parameter.number("eulerZ", 
         rangeTable.z - rangeTable.range,  
         rangeTable.z + rangeTable.range,
         rangeTable.z)
 end
 
 function LivePositioner:setScalesAndRanges(rangeTable)
-    parameter.number("subjectScaleX",
+    parameter.number("scaleX",
     rangeTable.x - (rangeTable.range * 0.5),
     rangeTable.x + rangeTable.range,
     rangeTable.x)
-    parameter.number("subjectScaleY",
+    parameter.number("scaleY",
     rangeTable.y - (rangeTable.range * 0.5),
     rangeTable.y + rangeTable.range,
     rangeTable.y)
-    parameter.number("subjectScaleZ",
+    parameter.number("scaleZ",
     rangeTable.z - (rangeTable.range * 0.5),
     rangeTable.z + rangeTable.range,
     rangeTable.z)
@@ -325,19 +325,19 @@ end
 
 -- the update() function must be called by the main update() function
 function LivePositioner:update()
-    if subjectX then
-        self.subject.position = vec3(subjectX, subjectY, subjectZ)
+    if entityX then
+        self.subject.position = vec3(entityX, entityY, entityZ)
      --   subjectPosition = self.subject.position
     end
-    if subjectEulerX then
-        self.subject.rotation = quat.eulerAngles(subjectEulerX, subjectEulerY, subjectEulerZ)
-        self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z = subjectEulerX, subjectEulerY, subjectEulerZ
+    if eulerX then
+        self.subject.rotation = quat.eulerAngles(eulerX, eulerY, eulerZ)
+        self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z = eulerX, eulerY, eulerZ
     end
-    if subjectScaleX then
+    if scaleX then
         local multiplier = 1
         if subjectScaleAll then
             multiplier = subjectScaleAll
         end
-        self.subject.scale = vec3(subjectScaleX * multiplier, subjectScaleY * multiplier, subjectScaleZ * multiplier)
+        self.subject.scale = vec3(scaleX * multiplier, scaleY * multiplier, scaleZ * multiplier)
     end
 end
