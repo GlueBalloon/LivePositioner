@@ -5,7 +5,7 @@
 
 
 function setup()
-    
+    perspective(45,WIDTH/HEIGHT,0.1,100000000)
     scene = craft.scene()
     scene.camera.position = vec3(0,0,-10)
     EasyCraft.setUpBloomingEnvironment()

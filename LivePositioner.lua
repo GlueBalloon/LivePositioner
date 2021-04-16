@@ -59,15 +59,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         Show_Welcome = true
     end)
     
-    ModelInfo = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
-    
-    parameter.boolean("Model Choosing Info", true, function(value)
-        if value == false then
-            output.clear()
-            print(ModelInfo)
-        end
-        Model_Choosing_Info = true
-    end)
+
     
     parameter.watch("CurrentModel")
     parameter.watch("CurrentPack")
@@ -107,6 +99,16 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
                 return
          --   end
         end
+    end)
+    
+    ModelInfo = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
+    
+    parameter.boolean("Model Choosing Info", true, function(value)
+        if value == false then
+            output.clear()
+            print(ModelInfo)
+        end
+        Model_Choosing_Info = true
     end)
     
     PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
