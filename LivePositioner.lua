@@ -49,20 +49,24 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.clear()
     
+    parameter.watch("__________Welcome__________")
+    __________Welcome__________ = "Have fun making scenes!"
+    
     WelcomeString = "Welcome to LivePositioner!\n\nUse the parameter controls to make a custom scene with Codea's built-in models.\n\nYou can save your scene, and it will appear as a function called 'recreateScene()' on the the recreateScene tab.\n\nYou can then cut-and-paste that function into any project of your own, and use it for whatever you want."
     
-    parameter.boolean("Show Welcome", true, function(value)
-        if value == false then
+    parameter.boolean("MoreWelcomeInfo", false, function(value)
+        if value == true then
             output.clear()
             print(WelcomeString)
         end
-        Show_Welcome = true
+        MoreWelcomeInfo = false
     end)
     
 
     
-    parameter.watch("CurrentModel")
-    parameter.watch("CurrentPack")
+    parameter.watch("__________Models__________")
+    __________Models__________ = "Choose any built-in model."
+    
     parameter.integer("ModelChooser", 1, #self.modelSets[self.currentSetIndex], self.currentModelIndex, function()
         if ModelChooser > #self.modelSets[self.currentSetIndex] then
             ModelChooser = #self.modelSets[self.currentSetIndex]
@@ -101,33 +105,21 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
     end)
     
-    ModelInfo = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
+    parameter.watch("CurrentModel")
+    parameter.watch("CurrentPack")
     
-    parameter.boolean("Model Choosing Info", true, function(value)
-        if value == false then
+    ModelsInfoString = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
+    
+    parameter.boolean("MoreModelsInfo", false, function(value)
+        if value == true then
             output.clear()
-            print(ModelInfo)
+            print(ModelsInfoString)
         end
-        Model_Choosing_Info = true
+        MoreModelsInfo = false
     end)
     
-    PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
-    
-    parameter.boolean("Positioning Info", true, function(value)
-        if value == false then
-            output.clear()
-            print(PositioningFo)
-        end
-        Positioning_Info = true
-    end)
-    
-    parameter.boolean("MicroMode", setting, function(microOn)
-        print(microOn, setting)
-        if microOn ~= setting then
-            print("not ", microOn, setting)
-            self:setUpParametersWithMicroSettingOf(microOn)
-        end
-    end)
+    parameter.watch("__________Positioning__________")
+    __________Positioning__________ = "Move 'em, spin 'em, size 'em!"
     
     local setSlidersTo = {}
     if not subjectX then
@@ -147,7 +139,24 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     self:setPositionsAndRanges(setSlidersTo.positions)
     self:setEulersAndRanges(setSlidersTo.eulers)
     self:setScalesAndRanges(setSlidersTo.scale)
-
+    
+    parameter.boolean("MicroMode", setting, function(microOn)
+        print(microOn, setting)
+        if microOn ~= setting then
+            print("not ", microOn, setting)
+            self:setUpParametersWithMicroSettingOf(microOn)
+        end
+    end)
+    
+    PositioningFo = "The positioning sliders let you change the placement, rotation, and size of the selected model.\n\nIf it's hard to get a model in the exact right size, place, or angle that you want, toggle 'MicroMode' on.\n\nMicroMode is for making precise adjustments and getting things juuuuuust right."
+    
+    parameter.boolean("MorePositioningInfo", false, function(value)
+        if value == true then
+            output.clear()
+            print(PositioningFo)
+        end
+        MorePositioningInfo = false
+    end)
     
     SaveAndLoadFo = "There is only one save/load slot, so be careful.\n\nWhen you tap 'Save Scene' your current models and positions are stored on a tab named 'recreateScene'.\n\nIf you want to preserve a creation for good, manually copy the contents of that tab somewhere else.\n\nYou can also save just your camera position to a tab called 'restoreCameraSettings'."
     
