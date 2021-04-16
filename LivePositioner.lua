@@ -76,7 +76,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             ModelChooser = #self.modelSets[self.currentSetIndex]
         end
         self.currentModelIndex = ModelChooser
-        local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
+        local thisEntity = EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(self.currentSetIndex, ModelChooser))
@@ -92,7 +92,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
                 self.currentModelIndex = ModelChooser
             end
             self.currentSetIndex = PackChooser
-            local thisEntity = EasyCraft.entities[entities[currentEntityIndex] ]
+            local thisEntity = EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ]
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
             local newModel = craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex))
@@ -174,7 +174,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         --reset entity tables and reset indexes
         EasyCraft.entities = {}
         EasyCraft.entityNames = {}
-        currentEntityIndex = 1
+        self.currentEntityIndex = 1
         self.currentSetIndex = 1
         self.currentModelIndex = 1
         
@@ -201,22 +201,22 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.action("Select Next Entity", function()
         ShowBounds = true
-        if currentEntityIndex == #entities then
-            currentEntityIndex = 1
+        if self.currentEntityIndex == #EasyCraft.entityNames then
+            self.currentEntityIndex = 1
         else
-            currentEntityIndex = currentEntityIndex + 1
+            self.currentEntityIndex = self.currentEntityIndex + 1
         end
-        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
     end)
     
     parameter.action("Select Previous Entity", function()
         ShowBounds = true
-        if currentEntityIndex == 1 then
-            currentEntityIndex = #entities
+        if self.currentEntityIndex == 1 then
+            self.currentEntityIndex = #EasyCraft.entityNames
         else
-            currentEntityIndex = currentEntityIndex - 1
+            self.currentEntityIndex = self.currentEntityIndex - 1
         end
-        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
     end)
     
     parameter.boolean("ShowBounds", false)
@@ -227,15 +227,14 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
           parameter.action("New Entity", function()
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
-        table.insert(entities, newThing.name)
-        currentEntityIndex = #entities
+        self.currentEntityIndex = #EasyCraft.entityNames
         local currentE = getCurrentEntity()
         currentE:remove(craft.renderer)
         currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
-        print(EasyCraft.entities[entities[currentEntityIndex] ].position)
-        self:changeSubject(EasyCraft.entities[entities[currentEntityIndex] ])
+        print(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ].position)
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
     end)    
 end
 

@@ -198,7 +198,7 @@ end
 
 EasyCraft = class()
 EasyCraft.entities = {}
-
+EasyCraft.entityNames ={}
 EasyCraft.randomVec3 = function()
 local x, y, z
 x = math.random(0, 99999999) * 0.00001
@@ -221,7 +221,7 @@ EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotati
     newEntity.modelName = modelName or "Adventurer.obj"
     newEntity.model = craft.model(asset.builtin[newEntity.modelPack][newEntity.modelName])
     EasyCraft.entities[newEntity.name] = newEntity
-
+    EasyCraft.entityNames[#EasyCraft.entityNames + 1] = newEntity.name
     return newEntity
 end
 
