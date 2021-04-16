@@ -23,7 +23,7 @@ function LivePositioner:changeSubject(thisSubject)
     end
     self.subjectChanging = true
     self.subject = thisSubject
-    subjectScaleAll = 1
+    scaleAll = 1
     entityX, entityY, entityZ = thisSubject.position.x, thisSubject.position.y, thisSubject.position.z
     if self.subject.sliderEulers then
         eulerX, eulerY, eulerZ = self.subject.sliderEulers.x, self.subject.sliderEulers.y, self.subject.sliderEulers.z
@@ -129,11 +129,11 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     elseif setting == false then
         setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ, 1000)
         setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,180)
-        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,600,subjectScaleAll,40)
+        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,600,scaleAll,40)
     elseif setting == true then
         setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ,30)
         setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,30)
-        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,4,subjectScaleAll,2)
+        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,4,scaleAll,2)
     end
     
     self:setPositionsAndRanges(setSlidersTo.positions)
@@ -315,7 +315,7 @@ function LivePositioner:setScalesAndRanges(rangeTable)
     rangeTable.z + rangeTable.range,
     rangeTable.z)
     if rangeTable.scaleAll then
-        parameter.number("subjectScaleAll",
+        parameter.number("scaleAll",
         rangeTable.scaleAll - (rangeTable.scaleRange * 0.5),
         rangeTable.scaleRange,
         rangeTable.scaleAll
@@ -335,8 +335,8 @@ function LivePositioner:update()
     end
     if scaleX then
         local multiplier = 1
-        if subjectScaleAll then
-            multiplier = subjectScaleAll
+        if scaleAll then
+            multiplier = scaleAll
         end
         self.subject.scale = vec3(scaleX * multiplier, scaleY * multiplier, scaleZ * multiplier)
     end
