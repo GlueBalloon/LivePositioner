@@ -17,6 +17,7 @@ function OrbitViewer:init(entity, target, zoom, minZoom, maxZoom)
     
     self.entity = entity
     self.camera = entity:get(craft.camera)
+    self.camera.farPlane = 2000
     
     -- The camera's current target
     self.target = target or vec3(0,0,0)

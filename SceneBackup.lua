@@ -1,10 +1,6 @@
-function backupRecreate()
 --function easyCraftRecreate()
-        
-        local scene = scene
-        if not scene then
-            scene = craft.scene()
-        end
+function backupRecreate()
+        local scene = scene or craft.scene()
         
         local sceneTable = {}
         sceneTable.entities = {}

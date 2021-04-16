@@ -299,6 +299,7 @@ EasyCraft.entitiesHaveSameBasicProperties = function(entity1, entity2)
 end
 
 EasyCraft.saveScene = function ()
+    
     local entitiesString = ""
     local easyCraftEntitiesString = ""
     
@@ -316,10 +317,7 @@ EasyCraft.saveScene = function ()
     local dataString = [[    
 function recreateScene()
     
-    local scene = scene
-    if not scene then
-        scene = craft.scene()
-    end
+    local scene = scene or craft.scene()
     
     local sceneTable = {}
     sceneTable.entities = {}
@@ -333,10 +331,7 @@ end]]
     local easyCraftDataString = [[
 function easyCraftRecreate()
         
-    local scene = scene
-    if not scene then
-        scene = craft.scene()
-    end
+    local scene = scene or craft.scene()
         
     local sceneTable = {}
     sceneTable.entities = {}

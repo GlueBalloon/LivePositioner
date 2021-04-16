@@ -131,9 +131,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,180)
         setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,600,subjectScaleAll,40)
     elseif setting == true then
-        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ,50)
-        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,40)
-        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,10,subjectScaleAll,5)
+        setSlidersTo.positions = self:rangeTable(subjectX, subjectY, subjectZ,30)
+        setSlidersTo.eulers = self:rangeTable(subjectEulerX, subjectEulerY, subjectEulerZ,30)
+        setSlidersTo.scale = self:rangeTable(subjectScaleX, subjectScaleY, subjectScaleZ,4,subjectScaleAll,2)
     end
     
     self:setPositionsAndRanges(setSlidersTo.positions)
