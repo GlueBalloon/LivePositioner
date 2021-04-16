@@ -158,6 +158,47 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         MorePositioningInfo = false
     end)
     
+    parameter.watch("__________Selecting__________")
+    __________Selecting__________ = "Select the model to work on."
+    
+    parameter.action("Select Next Entity", function()
+        HideSelectionBox = false
+        if self.currentEntityIndex == #EasyCraft.entityNames then
+            self.currentEntityIndex = 1
+        else
+            self.currentEntityIndex = self.currentEntityIndex + 1
+        end
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+    end)
+    
+    parameter.action("Select Previous Entity", function()
+        HideSelectionBox = false
+        if self.currentEntityIndex == 1 then
+            self.currentEntityIndex = #EasyCraft.entityNames
+        else
+            self.currentEntityIndex = self.currentEntityIndex - 1
+        end
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+    end)
+    
+    parameter.boolean("HideSelectionBox", false)
+    
+    parameter.watch("__________Creating__________")
+    __________Creating__________ = "Make a new entity."
+    
+    parameter.action("New Entity", function()
+        HideSelectionBox = false
+        local idNumber = math.random(1,2147483647)
+        local newThing = EasyCraft.makeAThing(idNumber)
+        self.currentEntityIndex = #EasyCraft.entityNames
+        local currentE = getCurrentEntity()
+        currentE:remove(craft.renderer)
+        currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
+        currentE.modelPack = self. modelSetNames[self.currentSetIndex]
+        currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
+        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+    end)
+    
     parameter.watch("__________Saving__________")
     __________Saving__________ = "Save early and often!"
 
@@ -205,47 +246,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         MoreSaveInfo = false
     end)
     
-    parameter.watch("__________Selecting__________")
-    __________Selecting__________ = "Select the model to work on."
-    
-    parameter.action("Select Next Entity", function()
-        ShowBoundingBox = true
-        if self.currentEntityIndex == #EasyCraft.entityNames then
-            self.currentEntityIndex = 1
-        else
-            self.currentEntityIndex = self.currentEntityIndex + 1
-        end
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
-    end)
-    
-    parameter.action("Select Previous Entity", function()
-        ShowBoundingBox = true
-        if self.currentEntityIndex == 1 then
-            self.currentEntityIndex = #EasyCraft.entityNames
-        else
-            self.currentEntityIndex = self.currentEntityIndex - 1
-        end
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
-    end)
-    
-    parameter.boolean("ShowBoundingBox", false)
-       
-    
-    parameter.watch("__________Creating__________")
-    __________Creating__________ = "Make a new entity."
-   
-    parameter.action("New Entity", function()
-        ShowBoundingBox = true
-        local idNumber = math.random(1,2147483647)
-        local newThing = EasyCraft.makeAThing(idNumber)
-        self.currentEntityIndex = #EasyCraft.entityNames
-        local currentE = getCurrentEntity()
-        currentE:remove(craft.renderer)
-        currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
-        currentE.modelPack = self. modelSetNames[self.currentSetIndex]
-        currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
-    end)    
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)

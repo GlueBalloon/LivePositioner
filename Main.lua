@@ -65,7 +65,7 @@ function update(dt)
     -- Update the LivePositioner
     livePositioner:update()
 
-    if ShowBoundingBox then
+    if not HideSelectionBox then
         local currentBaby = getCurrentEntity()
         local b = currentBaby:get(craft.renderer).model.bounds
         local boundsScaledBase = vec3(b.max.x * currentBaby.scale.x, b.max.y * currentBaby.scale.y, b.max.z * currentBaby.scale.z)
