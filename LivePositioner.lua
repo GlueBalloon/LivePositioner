@@ -114,6 +114,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
         thisEntity.modelName = self.modelSets[self.currentSetIndex][ModelChooser]
         thisEntity:add(craft.renderer, newModel)
+        if Highlight == true then
+            self:applyDiffuseMultiplier(4.8, thisEntity)
+        end
     end)
     
     parameter.integer("PackChooser", 1, #self.modelSets, PackIndexParameterCurrent, function()
@@ -130,6 +133,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
             thisEntity.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
             thisEntity:add(craft.renderer, newModel)
+            if Highlight == true then
+                self:applyDiffuseMultiplier(4.8, thisEntity)
+            end
             PackIndexParameterCurrent = PackChooser
             self.currentModelIndex = ModelChooser
             self:setUpParametersWithMicroSettingOf(setting)
