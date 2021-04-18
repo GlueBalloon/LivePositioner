@@ -225,25 +225,6 @@ EasyCraft.makeAThing = function(name, modelPack, modelName, positionVec3, rotati
     return newEntity
 end
 
-EasyCraft.setUpBloomingEnvironment = function()
-    -- Setup lighting
-    scene.ambientColor = color(63, 63, 63, 255)
-    sunLight = scene.sun:get(craft.light)
-    sunLight.intensity = 0.7
-    scene.sun.rotation = quat.eulerAngles(80, 0, 0)
-    
-    cameraComponent = scene.camera:get(craft.camera)
-    cameraComponent.hdr = true
-    cameraComponent.colorTextureEnabled = true
-    
-    bloom = craft.bloomEffect()
-    cameraComponent:addPostEffect(bloom)
-    bloom.threshold = 2.9
-    bloom.intensity = 0.58
-    bloom.softThreshold = 0.16
-    bloom.iterations = 8
-end
-
 EasyCraft.stringWrappingStringInFunctionNamed = function(functionName, dataString)
     return [[
 function ]]..functionName..[[()

@@ -10,7 +10,6 @@ function setup()
     perspective(45,WIDTH/HEIGHT,0.1,100000000)
     scene = craft.scene()
     scene.camera.position = vec3(0,0,-10)
-    EasyCraft.setUpBloomingEnvironment()
     firstEntity = EasyCraft.makeAThing("startingThing")
     
     local characters = modelTableFromPack(asset.builtin.Blocky_Characters)
@@ -25,6 +24,7 @@ function setup()
     local packNames = {"Blocky_Characters", "Nature", "CastleKit", "SpaceKit", "Primitives", "RacingKit", "Watercraft"}
     
     livePositioner = LivePositioner(firstEntity, packs, packNames)
+    livePositioner:setUpBloomingEnvironment()
     livePositioner:setUpParametersWithMicroSettingOf(false)
     
     if restoreCameraSettings then

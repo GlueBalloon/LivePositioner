@@ -43,6 +43,25 @@ function LivePositioner:changeSubject(thisSubject)
     self.subjectChanging = false
 end
 
+function LivePositioner:setUpBloomingEnvironment()
+    -- Setup lighting
+    scene.ambientColor = color(63, 63, 63, 255)
+    sunLight = scene.sun:get(craft.light)
+    sunLight.intensity = 0.7
+    scene.sun.rotation = quat.eulerAngles(80, 0, 0)
+    
+    cameraComponent = scene.camera:get(craft.camera)
+    cameraComponent.hdr = true
+    cameraComponent.colorTextureEnabled = true
+    
+    bloom = craft.bloomEffect()
+    cameraComponent:addPostEffect(bloom)
+    bloom.threshold = 2.9
+    bloom.intensity = 0.58
+    bloom.softThreshold = 0.16
+    bloom.iterations = 8
+end
+
 function LivePositioner:applyDiffuseMultiplier(multiplier, entity)
     local numberOfSubmeshes, thisMaterial
     numberOfSubmeshes = entity.model.submeshCount
@@ -175,7 +194,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     __________Selecting__________ = "Select the model to work on."
     
     parameter.action("Select Next Entity", function()
-        if HideSelectionBox == false then
+        if Highlight == true then
             self:applyDiffuseMultiplier(1/4.8,  getCurrentEntity())
         end
         if self.currentEntityIndex == #EasyCraft.entityNames then
@@ -187,12 +206,12 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(thisBaby)
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-        HideSelectionBox = false
+        Highlight = true
         self:applyDiffuseMultiplier(4.8, thisBaby)
     end)
     
     parameter.action("Select Previous Entity", function()
-        if HideSelectionBox == false then
+        if Highlight == true then
             self:applyDiffuseMultiplier(1/4.8,  getCurrentEntity())
         end
         if self.currentEntityIndex == 1 then
@@ -203,17 +222,24 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(getCurrentEntity())
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-        HideSelectionBox = false
+        Highlight = true
         self:applyDiffuseMultiplier(4.8, getCurrentEntity())
     end)
     
-    parameter.boolean("HideSelectionBox", false)
+    parameter.boolean("Highlight", false, function()
+        print("highlight",Highlight)
+        if Highlight == true then
+            self:applyDiffuseMultiplier(4.8, getCurrentEntity())
+        else
+            self:applyDiffuseMultiplier(1/4.8, getCurrentEntity())
+        end
+    end)
     
     parameter.watch("__________Creating__________")
     __________Creating__________ = "Make a new entity."
     
     parameter.action("New Entity", function()
-        HideSelectionBox = false
+        self:applyDiffuseMultiplier(1/4.8, getCurrentEntity())
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         self.currentEntityIndex = #EasyCraft.entityNames
@@ -223,6 +249,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        self:applyDiffuseMultiplier(4.8, getCurrentEntity())
+        Highlight = true
     end)
     
     parameter.watch("__________Saving__________")
