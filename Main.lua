@@ -67,6 +67,7 @@ function update(dt)
     -- Update the LivePositioner
     livePositioner:update()
 
+    --[[
     if not HideSelectionBox then
         local currentBaby = getCurrentEntity()
         local b = currentBaby:get(craft.renderer).model.bounds
@@ -77,6 +78,7 @@ function update(dt)
         b2:translate(currentBaby.position)
         scene.debug:bounds(b2, color(255,255,255,255))
     end
+    ]]
 end
 
 -- Called automatically by codea

@@ -29,9 +29,6 @@ function LivePositioner:changeSubject(thisSubject)
             break
         end
     end
-    if self.subject and self.subject.material then
-        self.subject.material.diffuse = vec3(1,1,1)
-    end
     self.subjectChanging = true
     self.subject = thisSubject
     scaleAll = 1
@@ -46,6 +43,14 @@ function LivePositioner:changeSubject(thisSubject)
     self.subjectChanging = false
 end
 
+function LivePositioner:applyDiffuseMultiplier(multiplier, entity)
+    local numberOfSubmeshes, thisMaterial
+    numberOfSubmeshes = entity.model.submeshCount
+    for i=0, numberOfSubmeshes-1 do
+        thisMaterial = entity.model:getMaterial(i)
+        thisMaterial.diffuse = thisMaterial.diffuse*multiplier
+    end
+end
 
 
 -- defineLiveParameters(...) sets up the parameter controls
@@ -170,27 +175,36 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     __________Selecting__________ = "Select the model to work on."
     
     parameter.action("Select Next Entity", function()
-        HideSelectionBox = false
+        if HideSelectionBox == false then
+            self:applyDiffuseMultiplier(1/4.8,  getCurrentEntity())
+        end
         if self.currentEntityIndex == #EasyCraft.entityNames then
             self.currentEntityIndex = 1
         else
             self.currentEntityIndex = self.currentEntityIndex + 1
         end
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        local thisBaby = getCurrentEntity()
+        self:changeSubject(thisBaby)
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
+        HideSelectionBox = false
+        self:applyDiffuseMultiplier(4.8, thisBaby)
     end)
     
     parameter.action("Select Previous Entity", function()
-        HideSelectionBox = false
+        if HideSelectionBox == false then
+            self:applyDiffuseMultiplier(1/4.8,  getCurrentEntity())
+        end
         if self.currentEntityIndex == 1 then
             self.currentEntityIndex = #EasyCraft.entityNames
         else
             self.currentEntityIndex = self.currentEntityIndex - 1
         end
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        self:changeSubject(getCurrentEntity())
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
+        HideSelectionBox = false
+        self:applyDiffuseMultiplier(4.8, getCurrentEntity())
     end)
     
     parameter.boolean("HideSelectionBox", false)
