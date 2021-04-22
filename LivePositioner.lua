@@ -66,6 +66,8 @@ end
 function LivePositioner:applyDiffuseMultiplier(multiplier, entity)
     local numberOfSubmeshes, thisMaterial
     numberOfSubmeshes = entity.model.submeshCount
+    print(numberOfSubmeshes)
+    print(entity.model:getMaterial(0))
     for i=0, numberOfSubmeshes-1 do
         thisMaterial = entity.model:getMaterial(i)
         thisMaterial.diffuse = thisMaterial.diffuse*multiplier
@@ -78,6 +80,19 @@ function LivePositioner:define(thing, pTable, eTable, sTable)
     local eulers = eTable or self:rangeTable(0,0,0,180)
     local scales = sTable or self:rangeTable(1,1,1,150,1,40)
     LivePositioner:setUpParametersWithMicroSettingOf(false)
+end
+
+function LivePositioner:setHighlightFor(thisEntity, stateToSet)
+    if self.highlightedEntity then --un-highlight anything currently lit
+        print("removing highlight for: ", self.highlightedEntity)
+        self:applyDiffuseMultiplier(1/self.highlightMultiplier, self.highlightedEntity)
+        self.highlightedEntity = nil
+    end
+    if stateToSet == true then --highlight thisEntity if needed
+        print("adding highlight to: ", thisEntity)
+        self.highlightedEntity = thisEntity
+        self:applyDiffuseMultiplier(self.highlightMultiplier*9, self.highlightedEntity)
+    end
 end
 
 function LivePositioner:setUpParametersWithMicroSettingOf(setting)
@@ -114,9 +129,11 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
         thisEntity.modelName = self.modelSets[self.currentSetIndex][ModelChooser]
         thisEntity:add(craft.renderer, newModel)
+        --[[
         if Highlight == true then
             self:applyDiffuseMultiplier(self.highlightMultiplier, thisEntity)
         end
+        ]]
     end)
     
     parameter.integer("PackChooser", 1, #self.modelSets, PackIndexParameterCurrent, function()
@@ -127,10 +144,12 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             end
             self.currentSetIndex = PackChooser
             local thisEntity = getCurrentEntity()
+            --[[
             if Highlight == true then
                 self:applyDiffuseMultiplier(1/self.highlightMultiplier, thisEntity)
                 Highlight = false
             end
+            ]]
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
             local newModel = craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex))
@@ -139,7 +158,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             thisEntity:add(craft.renderer, newModel)
             PackIndexParameterCurrent = PackChooser
             self.currentModelIndex = ModelChooser
-            self.amResettingParameters = true
             self:setUpParametersWithMicroSettingOf(setting)
             return
         end
@@ -182,12 +200,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.boolean("MicroMode", setting, function(microOn)
         print(microOn, setting)
-        if self.amResettingParameters == false then
-            if microOn ~= setting then
-                print("not ", microOn, setting)
-                self.amResettingParameters = true
-                self:setUpParametersWithMicroSettingOf(microOn)
-            end
+        if microOn ~= setting then
+            print("not ", microOn, setting)
+            self:setUpParametersWithMicroSettingOf(microOn)
         end
     end)
     
@@ -205,9 +220,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     __________Selecting__________ = "Select the model to work on."
     
     parameter.action("Select Next Entity", function()
-        if Highlight == true then
-            self:applyDiffuseMultiplier(1/self.highlightMultiplier,  getCurrentEntity())
-        end
         if self.currentEntityIndex == #EasyCraft.entityNames then
             self.currentEntityIndex = 1
         else
@@ -217,14 +229,10 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(thisBaby)
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-        Highlight = true
-        self:applyDiffuseMultiplier(self.highlightMultiplier, thisBaby)
+      --  self:setHighlightFor(getCurrentEntity())
     end)
     
     parameter.action("Select Previous Entity", function()
-        if Highlight == true then
-            self:applyDiffuseMultiplier(1/self.highlightMultiplier,  getCurrentEntity())
-        end
         if self.currentEntityIndex == 1 then
             self.currentEntityIndex = #EasyCraft.entityNames
         else
@@ -233,26 +241,18 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(getCurrentEntity())
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-        Highlight = true
-        self:applyDiffuseMultiplier(self.highlightMultiplier, getCurrentEntity())
+    --    self:setHighlightFor(getCurrentEntity())
     end)
     
     parameter.boolean("Highlight", false, function()
         print("highlight",Highlight)
-        if self.amResettingParameters == false then
-            if Highlight == true then
-                self:applyDiffuseMultiplier(self.highlightMultiplier, getCurrentEntity())
-            else
-                self:applyDiffuseMultiplier(1/self.highlightMultiplier, getCurrentEntity())
-            end
-        end
+        self:setHighlightFor(getCurrentEntity(), Highlight)
     end)
     
     parameter.watch("__________Creating__________")
     __________Creating__________ = "Make a new entity."
     
     parameter.action("New Entity", function()
-        self:applyDiffuseMultiplier(1/self.highlightMultiplier, getCurrentEntity())
         local idNumber = math.random(1,2147483647)
         local newThing = EasyCraft.makeAThing(idNumber)
         self.currentEntityIndex = #EasyCraft.entityNames
@@ -262,8 +262,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
-        self:applyDiffuseMultiplier(self.highlightMultiplier, getCurrentEntity())
-        Highlight = true
+     --   self:setHighlightFor(getCurrentEntity())
     end)
     
     parameter.watch("__________Saving__________")
@@ -312,10 +311,6 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
         MoreSaveInfo = false
     end)
-    
-    if self.amResettingParameters == true then
-        self.amResettingParameters = false
-    end
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)
