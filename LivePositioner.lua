@@ -61,6 +61,15 @@ function LivePositioner:setUpBloomingEnvironment()
     bloom.intensity = 0.58
     bloom.softThreshold = 0.16
     bloom.iterations = 8
+    
+    scene.sky.material.sky = color(20, 19, 29, 255)
+    scene.sky.material.horizon = color(22, 21, 28, 255)
+    
+    local keyLight = scene:entity():add(craft.light, DIRECTIONAL)
+    keyLight.entity.parent = scene.camera
+    keyLight.entity.eulerAngles = vec3(-230,100,0)
+    keyLight.intensity = 1.0
+    keyLight.color = color(241, 241, 238)
 end
 
 function LivePositioner:applyDiffuseMultiplier(multiplier, entity)

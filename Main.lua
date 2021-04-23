@@ -1,9 +1,12 @@
 
 -- LivePositioner by ubergoober
 
---[[bugs: 
+--[[bugs and to-do 
  - When using selection controls, model chooser slider maximum amount doesn't change to match number of items in selected entity's model pack
  - not really a bug but it would be cool if we could dynamically apply a glow to the selected entity, instead of using a bounding box
+ - make rotation range larger in micro mode
+ - expose entity ids
+ - Add check for existing ID numbers when creating randomized ids.
 ]]
 
 function setup()

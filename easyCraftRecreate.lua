@@ -5,79 +5,85 @@ function easyCraftRecreate()
     local sceneTable = {}
     sceneTable.entities = {}
        
-    local newEntity = EasyCraft.makeAThing("36628789", "SpaceKit", "spaceCraft2.obj", vec3(-66.080086, 13.746753, 35.911255), vec3(26.937040, -2.191487, 49.026875), vec3(2.809524, 2.900433, 2.900433), vec3(18.831169, 19.740261, 52.857143))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("startingThing", "Watercraft", "watercraftPack_007.obj", vec3(0.000000, -36.902596, 0.000000), vec3(-0.174675, -3.207969, -10.925400), vec3(14.480471, 14.480471, 14.480471), vec3(-0.779221, -3.116883, -10.909091))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("16790978", "Nature", "naturePack_119.obj", vec3(260.240265, -55.777054, 84.093094), vec3(-1.111689, -19.821569, -8.267008), vec3(58.831177, 84.978348, 52.554111), vec3(-3.896104, -19.480520, -7.792208))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("77900663", "CastleKit", "wall.obj", vec3(-99.067101, -38.461040, -192.963211), vec3(0.000000, -0.000000, 0.000000), vec3(4.159780, 8.319560, 6.363636), vec3(0.000000, 0.000000, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("63049979", "Blocky_Characters", "Soldier.obj", vec3(11.928572, 3.270563, -15.820346), vec3(0.000000, -0.000000, 8.701299), vec3(1.000000, 1.000000, 1.000000), vec3(0.000000, 0.000000, 8.701299))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("27421333", "Blocky_Characters", "Robot.obj", vec3(16.430735, 44.915585, 24.612555), vec3(2.781305, -26.497959, 7.507267), vec3(1.000000, 1.000000, 1.000000), vec3(6.103897, -25.974028, 6.753247))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1756907330", "Blocky_Characters", "ManAlternative.obj", vec3(-8.008657, -11.904759, 62.510826), vec3(11.924943, 4.090565, -18.663504), vec3(1.000000, 1.000000, 1.000000), vec3(12.597404, 0.000000, -19.090910))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("20773217", "Blocky_Characters", "Man.obj", vec3(11.928571, -16.383116, 40.976189), vec3(-3.506494, 60.000015, 0.000000), vec3(1.000000, 1.000000, 1.000000), vec3(-3.506494, 60.000000, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("11457043", "Nature", "naturePack_083.obj", vec3(424.742432, -25.474022, 75.435089), vec3(0.000000, 83.376610, 0.000000), vec3(128.925644, 62.927956, 167.661774), vec3(0.000000, 83.376625, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1171073909", "Blocky_Characters", "Woman.obj", vec3(15.194803, -12.597407, 52.121212), vec3(11.615396, 33.739620, -58.423916), vec3(1.000000, 1.000000, 1.000000), vec3(34.675316, 7.922081, -59.480526))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("46142188", "SpaceKit", "spaceCraft5.obj", vec3(142.857147, 108.225105, -155.844162), vec3(156.629913, 44.306313, -162.104401), vec3(2.874009, 2.874009, 2.874009), vec3(-35.064934, 143.376617, -15.584415))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("15728210", "Nature", "naturePack_119.obj", vec3(242.924255, -38.461033, 205.305222), vec3(7.792208, -14.805195, 0.000000), vec3(86.103905, 52.294373, 52.294373), vec3(7.792208, -14.805195, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
     local newEntity = EasyCraft.makeAThing("987086466", "Primitives", "Sphere.obj", vec3(3.549785, 13.679655, 157.792206), vec3(0.000000, -0.000000, 0.000000), vec3(3.349092, 3.349092, 3.349092), vec3(0.000000, 0.000000, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1808644964", "Blocky_Characters", "Orc.obj", vec3(-3.419911, -12.034630, 8.484848), vec3(-5.454546, -67.792206, -0.000001), vec3(1.000000, 1.000000, 1.000000), vec3(-5.454545, -67.792206, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1581285114", "Nature", "naturePack_119.obj", vec3(64.935066, -47.619049, 316.017303), vec3(0.000000, -54.545464, 0.000000), vec3(68.398270, 45.014057, 68.398270), vec3(0.000000, -54.545456, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1841750102", "Blocky_Characters", "Robot.obj", vec3(-16.450214, -10.346318, 50.952396), vec3(-24.415579, -48.831169, -0.000001), vec3(1.000000, 1.000000, 1.000000), vec3(-24.415585, -48.831169, 0.000000))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("54253005", "Blocky_Characters", "Orc.obj", vec3(33.030308, 11.428567, -14.738096), vec3(-26.597435, -15.547713, -118.416969), vec3(1.000000, 1.000000, 1.000000), vec3(-180.129868, 210.519485, 57.922077))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("1955093335", "Blocky_Characters", "Orc.obj", vec3(7.965368, -14.329004, 63.852814), vec3(-11.785093, 1.980667, 9.405947), vec3(1.000000, 1.000000, 1.000000), vec3(-11.948052, 0.000000, 9.610390))
-    sceneTable.entities[newEntity.name] = newEntity
-   
-    local newEntity = EasyCraft.makeAThing("31998308", "Blocky_Characters", "WomanAlternative.obj", vec3(-3.742424, -14.088728, 40.456711), vec3(-5.874900, -75.114830, 6.077391), vec3(1.000000, 1.000000, 1.000000), vec3(0.000000, -75.194809, 1.558442))
     sceneTable.entities[newEntity.name] = newEntity
    
     local newEntity = EasyCraft.makeAThing("32653373", "SpaceKit", "spaceCraft6.obj", vec3(47.619049, 56.277058, 90.909088), vec3(147.193329, 22.118933, 143.011444), vec3(2.121212, 2.121212, 2.121212), vec3(-14.025974, 143.376617, 35.064934))
     sceneTable.entities[newEntity.name] = newEntity
    
-    local newEntity = EasyCraft.makeAThing("8536199", "Primitives", "Sphere.obj", vec3(-38.461040, 9.590909, 36.560604), vec3(0.000000, -0.000000, 0.000000), vec3(2.908968, 2.908968, 2.908968), vec3(0.000000, 0.000000, 0.000000))
+    local newEntity = EasyCraft.makeAThing("77900663", "CastleKit", "wall.obj", vec3(-99.067101, -38.461040, -192.963211), vec3(0.000000, -0.000000, 0.000000), vec3(4.159780, 8.319560, 6.363636), vec3(0.000000, 0.000000, 0.000000))
     sceneTable.entities[newEntity.name] = newEntity
    
-    local newEntity = EasyCraft.makeAThing("1322837717", "Blocky_Characters", "Woman.obj", vec3(-8.701298, -2.597403, -9.480519), vec3(35.822800, -49.054161, -32.489101), vec3(1.000000, 1.000000, 1.000000), vec3(9.480519, -57.402596, -20.909090))
+    local newEntity = EasyCraft.makeAThing("617997830", "CastleKit", "knightRed.obj", vec3(-110.995674, 23.852814, -134.199127), vec3(-180.000000, -22.207792, 180.000000), vec3(2.000000, 2.000000, 2.000000), vec3(0.000000, -157.792206, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("31998308", "Blocky_Characters", "WomanAlternative.obj", vec3(-3.742424, -14.088728, 40.456711), vec3(-5.874900, -75.114830, 6.077391), vec3(1.000000, 1.000000, 1.000000), vec3(0.000000, -75.194809, 1.558442))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("20773217", "Blocky_Characters", "Man.obj", vec3(11.928571, -16.383116, 40.976189), vec3(-3.506494, 60.000015, 0.000000), vec3(1.000000, 1.000000, 1.000000), vec3(-3.506494, 60.000000, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("196793", "CastleKit", "wallPillar.obj", vec3(-121.212120, -27.229456, -125.541122), vec3(0.000000, -0.000000, 0.000000), vec3(4.000000, 4.000000, 4.000000), vec3(0.000000, 0.000000, 0.000000))
     sceneTable.entities[newEntity.name] = newEntity
    
     local newEntity = EasyCraft.makeAThing("2123724201", "Blocky_Characters", "Soldier.obj", vec3(-4.415585, 5.194800, -30.043282), vec3(2.365326, -64.551964, 6.591232), vec3(1.000000, 1.000000, 1.000000), vec3(8.311688, -64.285713, 2.857143))
     sceneTable.entities[newEntity.name] = newEntity
    
+    local newEntity = EasyCraft.makeAThing("433713", "CastleKit", "wallNarrowCorner.obj", vec3(-99.067101, -42.790043, -149.673157), vec3(0.000000, -0.000000, 0.000000), vec3(4.414460, 8.828920, 4.966268), vec3(0.000000, 0.000000, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("27421333", "Blocky_Characters", "Robot.obj", vec3(16.430735, 44.915585, 24.612555), vec3(2.781305, -26.497959, 7.507267), vec3(1.000000, 1.000000, 1.000000), vec3(6.103897, -25.974028, 6.753247))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("startingThing", "Watercraft", "watercraftPack_007.obj", vec3(0.000000, -36.902596, 0.000000), vec3(-0.174675, -3.207969, -10.925400), vec3(14.480471, 14.480471, 14.480471), vec3(-0.779221, -3.116883, -10.909091))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("46142188", "SpaceKit", "spaceCraft5.obj", vec3(142.857147, 108.225105, -155.844162), vec3(156.629913, 44.306313, -162.104401), vec3(2.874009, 2.874009, 2.874009), vec3(-35.064934, 143.376617, -15.584415))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1581285114", "Nature", "naturePack_119.obj", vec3(64.935066, -47.619049, 316.017303), vec3(0.000000, -54.545464, 0.000000), vec3(68.398270, 45.014057, 68.398270), vec3(0.000000, -54.545456, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1322837717", "Blocky_Characters", "Woman.obj", vec3(-8.701298, -2.597403, -9.480519), vec3(35.822800, -49.054161, -32.489101), vec3(1.000000, 1.000000, 1.000000), vec3(9.480519, -57.402596, -20.909090))
+    sceneTable.entities[newEntity.name] = newEntity
+   
     local newEntity = EasyCraft.makeAThing("17868578", "Nature", "naturePack_146.obj", vec3(-389.610382, -43.593075, 134.199127), vec3(-0.324303, -22.595196, 0.844009), vec3(196.129669, 76.349136, 199.169800), vec3(0.000000, -22.597403, 0.779221))
     sceneTable.entities[newEntity.name] = newEntity
    
-    local newEntity = EasyCraft.makeAThing("433713", "CastleKit", "wallNarrowCorner.obj", vec3(-99.067101, -42.790043, -149.673157), vec3(0.000000, -0.000000, 0.000000), vec3(4.414460, 8.828920, 4.966268), vec3(0.000000, 0.000000, 0.000000))
+    local newEntity = EasyCraft.makeAThing("8536199", "Primitives", "Sphere.obj", vec3(-38.461040, 9.590909, 36.560604), vec3(0.000000, -0.000000, 0.000000), vec3(2.908968, 2.908968, 2.908968), vec3(0.000000, 0.000000, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1955093335", "Blocky_Characters", "Orc.obj", vec3(7.965368, -14.329004, 63.852814), vec3(-11.785093, 1.980667, 9.405947), vec3(1.000000, 1.000000, 1.000000), vec3(-11.948052, 0.000000, 9.610390))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("54253005", "Blocky_Characters", "Orc.obj", vec3(33.030308, 11.428567, -14.738096), vec3(-26.597435, -15.547713, -118.416969), vec3(1.000000, 1.000000, 1.000000), vec3(-180.129868, 210.519485, 57.922077))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1171073909", "Blocky_Characters", "Woman.obj", vec3(15.194803, -12.597407, 52.121212), vec3(11.615396, 33.739620, -58.423916), vec3(1.000000, 1.000000, 1.000000), vec3(34.675316, 7.922081, -59.480526))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1841750102", "Blocky_Characters", "Robot.obj", vec3(-16.450214, -10.346318, 50.952396), vec3(-24.415579, -48.831169, -0.000001), vec3(1.000000, 1.000000, 1.000000), vec3(-24.415585, -48.831169, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1808644964", "Blocky_Characters", "Orc.obj", vec3(-3.419911, -12.034630, 8.484848), vec3(-5.454546, -67.792206, 0.000000), vec3(1.000000, 1.000000, 1.000000), vec3(-5.454545, -67.792206, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("1756907330", "Blocky_Characters", "ManAlternative.obj", vec3(-8.008657, -11.904759, 62.510826), vec3(11.924943, 4.090565, -18.663504), vec3(1.000000, 1.000000, 1.000000), vec3(12.597404, 0.000000, -19.090910))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("36628789", "SpaceKit", "spaceCraft2.obj", vec3(-66.080086, 13.746753, 35.911255), vec3(26.937040, -2.191487, 49.026875), vec3(2.809524, 2.900433, 2.900433), vec3(18.831169, 19.740261, 52.857143))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("15728210", "Nature", "naturePack_119.obj", vec3(242.924255, -38.461033, 205.305222), vec3(7.792208, -14.805195, 0.000000), vec3(86.103905, 52.294373, 52.294373), vec3(7.792208, -14.805195, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("16790978", "Nature", "naturePack_119.obj", vec3(260.240265, -55.777054, 84.093094), vec3(-1.111689, -19.821569, -8.267008), vec3(58.831177, 84.978348, 52.554111), vec3(-3.896104, -19.480520, -7.792208))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("11457043", "Nature", "naturePack_083.obj", vec3(424.742432, -25.474022, 75.435089), vec3(0.000000, 83.376610, 0.000000), vec3(128.925644, 62.927956, 167.661774), vec3(0.000000, 83.376625, 0.000000))
+    sceneTable.entities[newEntity.name] = newEntity
+   
+    local newEntity = EasyCraft.makeAThing("63049979", "Blocky_Characters", "Soldier.obj", vec3(11.928572, 3.270563, -15.820346), vec3(0.000000, -0.000000, 8.701299), vec3(1.000000, 1.000000, 1.000000), vec3(0.000000, 0.000000, 8.701299))
     sceneTable.entities[newEntity.name] = newEntity
         
     return sceneTable
