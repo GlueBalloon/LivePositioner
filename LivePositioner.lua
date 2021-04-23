@@ -66,9 +66,7 @@ end
 function LivePositioner:applyDiffuseMultiplier(multiplier, entity)
     local numberOfSubmeshes, thisMaterial
     numberOfSubmeshes = entity.model.submeshCount
-    print(numberOfSubmeshes)
-    print(entity.model:getMaterial(0))
-    for i=0, numberOfSubmeshes-1 do
+    for i=1, numberOfSubmeshes do
         thisMaterial = entity.model:getMaterial(i)
         thisMaterial.diffuse = thisMaterial.diffuse*multiplier
     end
@@ -85,13 +83,15 @@ end
 function LivePositioner:setHighlightFor(thisEntity, stateToSet)
     if self.highlightedEntity then --un-highlight anything currently lit
         print("removing highlight for: ", self.highlightedEntity)
+        Highlight = false
         self:applyDiffuseMultiplier(1/self.highlightMultiplier, self.highlightedEntity)
         self.highlightedEntity = nil
     end
     if stateToSet == true then --highlight thisEntity if needed
         print("adding highlight to: ", thisEntity)
+        Highlight = true
         self.highlightedEntity = thisEntity
-        self:applyDiffuseMultiplier(self.highlightMultiplier*9, self.highlightedEntity)
+        self:applyDiffuseMultiplier(self.highlightMultiplier, self.highlightedEntity)
     end
 end
 
@@ -129,11 +129,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
         thisEntity.modelName = self.modelSets[self.currentSetIndex][ModelChooser]
         thisEntity:add(craft.renderer, newModel)
-        --[[
-        if Highlight == true then
-            self:applyDiffuseMultiplier(self.highlightMultiplier, thisEntity)
-        end
-        ]]
+        self:setHighlightFor(thisEntity, Highlight)
     end)
     
     parameter.integer("PackChooser", 1, #self.modelSets, PackIndexParameterCurrent, function()
@@ -144,18 +140,13 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             end
             self.currentSetIndex = PackChooser
             local thisEntity = getCurrentEntity()
-            --[[
-            if Highlight == true then
-                self:applyDiffuseMultiplier(1/self.highlightMultiplier, thisEntity)
-                Highlight = false
-            end
-            ]]
             thisEntity:remove(craft.model)
             thisEntity:remove(craft.renderer)
             local newModel = craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex))
             thisEntity.modelPack = self.modelSetNames[self.currentSetIndex]
             thisEntity.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
             thisEntity:add(craft.renderer, newModel)
+            self:setHighlightFor(thisEntity, Highlight)
             PackIndexParameterCurrent = PackChooser
             self.currentModelIndex = ModelChooser
             self:setUpParametersWithMicroSettingOf(setting)
@@ -229,7 +220,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(thisBaby)
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-      --  self:setHighlightFor(getCurrentEntity())
+        self:setHighlightFor(getCurrentEntity(), true)
     end)
     
     parameter.action("Select Previous Entity", function()
@@ -241,7 +232,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(getCurrentEntity())
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
-    --    self:setHighlightFor(getCurrentEntity())
+        self:setHighlightFor(getCurrentEntity(), true)
     end)
     
     parameter.boolean("Highlight", false, function()
@@ -262,7 +253,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
         self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
-     --   self:setHighlightFor(getCurrentEntity())
+        self:setHighlightFor(getCurrentEntity(), false)
     end)
     
     parameter.watch("__________Saving__________")
@@ -276,26 +267,25 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.action("Load Saved Scene", function()
 
-        --[[
+        
         for i, name in ipairs(EasyCraft.entityNames) do
             local deadMan = EasyCraft.entities[name]
             EasyCraft.entities[name] = nil
             deadMan:destroy()
         end
-        ]]
         
-        --reset entity tables and reset indexes
+        --reset entity tables
         EasyCraft.entities = {}
         EasyCraft.entityNames = {}
+        
+        if easyCraftRecreate then
+            easyCraftRecreate()
+        end
+                                                                                                                                        
+       -- reset indexes
         self.currentEntityIndex = 1
         self.currentSetIndex = 1
         self.currentModelIndex = 1
-        
-        --not sure why I'm capturing the return value here
-        local newSceneParts
-        if easyCraftRecreate then
-            newSceneParts = easyCraftRecreate()
-        end
     end)
     
     parameter.action("Save Just Camera Position", function()
