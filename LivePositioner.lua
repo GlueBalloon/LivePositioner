@@ -219,7 +219,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("__________Selecting__________")
     __________Selecting__________ = "Select the model to work on."
     
-    parameter.integer("moof", 1, 10, 3, function()
+    parameter.integer("moof", 1, #EasyCraft.entities, self.currentEntityIndex, function()
         print(moof)
     end)
     
