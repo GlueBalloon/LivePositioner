@@ -189,9 +189,9 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,180)
         setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,600,scaleAll,40)
     elseif setting == true then
-        setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ,30)
-        setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,30)
-        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,4,scaleAll,2)
+        setSlidersTo.positions = self:rangeTable(entityX, entityY, entityZ,20)
+        setSlidersTo.eulers = self:rangeTable(eulerX, eulerY, eulerZ,100)
+        setSlidersTo.scale = self:rangeTable(scaleX, scaleY, scaleZ,4,scaleAll,4)
     end
     
     self:setPositionsAndRanges(setSlidersTo.positions)
@@ -277,11 +277,13 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.action("Load Saved Scene", function()
 
         
+        --[[
         for i, name in ipairs(EasyCraft.entityNames) do
             local deadMan = EasyCraft.entities[name]
             EasyCraft.entities[name] = nil
             deadMan:destroy()
         end
+        ]]
         
         --reset entity tables
         EasyCraft.entities = {}
