@@ -131,7 +131,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
             ModelChooser = #self.modelSets[self.currentSetIndex]
         end
         self.currentModelIndex = ModelChooser
-        local thisEntity = EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ]
+        local thisEntity = EasyCraft.entityTableByNames[EasyCraft.entityNames[self.currentEntityIndex] ]
         thisEntity:remove(craft.model)
         thisEntity:remove(craft.renderer)
         local newModel = craft.model(getAssetFor(self.currentSetIndex, ModelChooser))
@@ -219,7 +219,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("__________Selecting__________")
     __________Selecting__________ = "Select the model to work on."
     
-    parameter.integer("moof", 1, #EasyCraft.entities, self.currentEntityIndex, function()
+    parameter.integer("moof", 1, #EasyCraft.entityNames, 1, function()
+        print(#EasyCraft.entityTableByNames)
         print(moof)
     end)
     
@@ -265,7 +266,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE:add(craft.renderer, craft.model(getAssetFor(self.currentSetIndex, self.currentModelIndex)))
         currentE.modelPack = self. modelSetNames[self.currentSetIndex]
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
-        self:changeSubject(EasyCraft.entities[EasyCraft.entityNames[self.currentEntityIndex] ])
+        self:changeSubject(EasyCraft.entityTableByNames[EasyCraft.entityNames[self.currentEntityIndex] ])
         self:setHighlightFor(getCurrentEntity(), false)
     end)
     
@@ -283,24 +284,18 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         
         --[[
         for i, name in ipairs(EasyCraft.entityNames) do
-            local deadMan = EasyCraft.entities[name]
-            EasyCraft.entities[name] = nil
+            local deadMan = EasyCraft.entityTableByNames[name]
+            EasyCraft.entityTableByNames[name] = nil
             deadMan:destroy()
         end
         ]]
         
-        --reset entity tables
-        EasyCraft.entities = {}
-        EasyCraft.entityNames = {}
+        self:loadSavedScene()
         
-        if easyCraftRecreate then
-            easyCraftRecreate()
-        end
-                                                                                                                                        
-       -- reset indexes
-        self.currentEntityIndex = 1
-        self.currentSetIndex = 1
-        self.currentModelIndex = 1
+        print("entityTableByNames after loading:",#EasyCraft.entityTableByNames)
+        
+        --reset parameter list to refresh selection slider
+        self:setUpParametersWithMicroSettingOf(MicroMode)
     end)
     
     parameter.action("Save Just Camera Position", function()
@@ -316,6 +311,21 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         end
         MoreSaveInfo = false
     end)
+end
+
+function LivePositioner:loadSavedScene()
+    --reset entity tables
+    EasyCraft.entityTableByNames = {}
+    EasyCraft.entityNames = {}
+    
+    -- reset indexes
+    self.currentEntityIndex = 1
+    self.currentSetIndex = 1
+    self.currentModelIndex = 1
+    
+    if easyCraftRecreate then
+        easyCraftRecreate()
+    end
 end
 
 function LivePositioner:useTablesIn(tableOfPositions)

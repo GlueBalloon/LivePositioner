@@ -38,7 +38,7 @@ function setup()
 end
 
 function getCurrentEntity()
-    return EasyCraft.entities[ EasyCraft.entityNames[livePositioner.currentEntityIndex] ]
+    return EasyCraft.entityTableByNames[ EasyCraft.entityNames[livePositioner.currentEntityIndex] ]
 end
 
 function getAssetFor(packIndex, nameIndex)
