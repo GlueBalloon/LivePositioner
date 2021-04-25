@@ -219,6 +219,10 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("__________Selecting__________")
     __________Selecting__________ = "Select the model to work on."
     
+    parameter.integer("moof", 1, 10, 3, function()
+        print(moof)
+    end)
+    
     parameter.action("Select Next Entity", function()
         if self.currentEntityIndex == #EasyCraft.entityNames then
             self.currentEntityIndex = 1
