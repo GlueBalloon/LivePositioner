@@ -220,8 +220,12 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     __________Selecting__________ = "Select the model to work on."
     
     parameter.integer("SelectedEntity", 1, #EasyCraft.entityNames, 1, function()
-        print(#EasyCraft.entityTableByNames)
-        print(moof)
+        self.currentEntityIndex = SelectedEntity
+        local thisBaby = getCurrentEntity()
+        self:changeSubject(thisBaby)
+        PackChooser = self.currentSetIndex
+        ModelChooser = self.currentModelIndex
+        self:setHighlightFor(thisBaby, true)
     end)
     
     parameter.action("Select Next Entity", function()
@@ -234,6 +238,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(thisBaby)
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
+        SelectedEntity = self.currentEntityIndex
         self:setHighlightFor(getCurrentEntity(), true)
     end)
     
@@ -246,6 +251,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         self:changeSubject(getCurrentEntity())
         PackChooser = self.currentSetIndex
         ModelChooser = self.currentModelIndex
+        SelectedEntity = self.currentEntityIndex
         self:setHighlightFor(getCurrentEntity(), true)
     end)
     
