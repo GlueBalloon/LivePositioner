@@ -13,7 +13,7 @@ function LivePositioner:init(firstThing, modelSets, modelSetNames)
     self.modelSetNames = modelSetNames or {}
     self.currentSetIndex = 1
     self.currentModelIndex = 1
-    self.highlightMultiplier = 4.8
+    self.highlightMultiplier = 9
     self:changeSubject(firstThing)
 end
 
@@ -44,9 +44,9 @@ function LivePositioner:changeSubject(thisSubject)
     self.subjectChanging = false
 end
 
-function LivePositioner:setUpBloomingEnvironment()
+function LivePositioner:setUpBloomingEnvironment()    
     -- Setup lighting
-    scene.ambientColor = color(63, 63, 63, 255)
+  --  scene.ambientColor = color(63, 63, 63, 255)
     sunLight = scene.sun:get(craft.light)
     sunLight.intensity = 0.7
     scene.sun.rotation = quat.eulerAngles(80, 0, 0)
@@ -65,11 +65,13 @@ function LivePositioner:setUpBloomingEnvironment()
     scene.sky.material.sky = color(20, 19, 29, 255)
     scene.sky.material.horizon = color(22, 21, 28, 255)
     
+    --[[
     local keyLight = scene:entity():add(craft.light, DIRECTIONAL)
     keyLight.entity.parent = scene.camera
     keyLight.entity.eulerAngles = vec3(-230,100,0)
     keyLight.intensity = 1.0
     keyLight.color = color(241, 241, 238)
+    ]]
 end
 
 function LivePositioner:applyDiffuseMultiplier(multiplier, entity)
