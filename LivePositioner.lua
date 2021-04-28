@@ -221,7 +221,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     parameter.watch("__________Selecting__________")
     __________Selecting__________ = "Select the model to work on."
     
-    parameter.integer("SelectedEntity", 1, #EasyCraft.entityNames, 1, function()
+    parameter.integer("SelectedEntity", 1, #EasyCraft.entityNames, self.currentEntityIndex, function()
         self.currentEntityIndex = SelectedEntity
         local thisBaby = getCurrentEntity()
         self:changeSubject(thisBaby)
@@ -276,6 +276,8 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
         currentE.modelName = self.modelSets[self.currentSetIndex][self.currentModelIndex]
         self:changeSubject(EasyCraft.entityTableByNames[EasyCraft.entityNames[self.currentEntityIndex] ])
         self:setHighlightFor(getCurrentEntity(), false)
+        SelectedEntity = self.currentEntityIndex
+        self:setUpParametersWithMicroSettingOf(setting)
     end)
     
     parameter.watch("__________Saving__________")
