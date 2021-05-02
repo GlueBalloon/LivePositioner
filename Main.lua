@@ -88,8 +88,6 @@ end
 function draw()
     update(DeltaTime)  
     scene:draw()
-    CurrentModel = livePositioner.modelSets[livePositioner.currentSetIndex][livePositioner.currentModelIndex]
-    CurrentPack = livePositioner.modelSetNames[livePositioner.currentSetIndex]
 end
 
 function touched(touch)

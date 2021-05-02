@@ -167,6 +167,7 @@ function LivePositioner:setUpParametersWithMicroSettingOf(setting)
     
     parameter.watch("CurrentModel")
     parameter.watch("CurrentPack")
+    parameter.watch("CurrentEntityID")
     
     ModelsInfoString = "Codea's built-in models come in themed sets called 'packs.'\n\nThe PackChooser switches between packs, and the ModelChooser lets you quickly scroll through the models in each one."
     
@@ -433,4 +434,7 @@ function LivePositioner:update()
         end
         self.subject.scale = vec3(scaleX * multiplier, scaleY * multiplier, scaleZ * multiplier)
     end
+    CurrentModel = livePositioner.modelSets[livePositioner.currentSetIndex][livePositioner.currentModelIndex]
+    CurrentPack = livePositioner.modelSetNames[livePositioner.currentSetIndex]
+    CurrentEntityID = getCurrentEntity().name
 end
