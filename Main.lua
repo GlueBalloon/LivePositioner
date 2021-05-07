@@ -8,7 +8,7 @@
  - expose entity ids
  - Add check for existing ID numbers when creating randomized ids.
 ]]
-
+ 
 function setup()
     perspective(45,WIDTH/HEIGHT,0.1,100000000)
     scene = craft.scene()
