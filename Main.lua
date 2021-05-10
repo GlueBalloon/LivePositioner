@@ -13,6 +13,11 @@ function setup()
     perspective(45,WIDTH/HEIGHT,0.1,100000000)
     scene = craft.scene()
     scene.camera.position = vec3(0,0,-10)
+
+    local sunny = readText(asset.builtin.Environments.Night)
+    local env = craft.cubeTexture(json.decode(sunny))
+    scene.sky.material.envMap = env
+    
     firstEntity = EasyCraft.makeAThing("startingThing")
     
     local characters = modelTableFromPack(asset.builtin.Blocky_Characters)
@@ -33,7 +38,7 @@ function setup()
     if restoreCameraSettings then
         restoreCameraSettings()
     else
-        viewer = scene.camera:add(OrbitViewer, getCurrentEntity().position, 23, 6, 80)
+        viewer = scene.camera:add(OrbitViewer, getCurrentEntity().position, 23, 6, 800)
     end
 end
 
