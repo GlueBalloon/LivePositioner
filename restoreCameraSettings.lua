@@ -9,8 +9,8 @@
         --negative ry rotates you counter-clockwise around the target, so -180 is also completely behind
         --positive rx moves you above the target, with 90 or more being directly overhead
         --negative rx moves you below the target, with -90 or more being directly under
-        viewer.ry = -151.92319510348
-        viewer.rx = 36.97402693504
-        viewer.zoom = 142.53409564119
-        viewer.target = target or vec3(-78.423547, 62.927210, -178.977816)
+        viewer.ry = -123.08633854162
+        viewer.rx = 36.784062029073
+        viewer.zoom = 216.26675974395
+        viewer.target = target or vec3(-96.650499, 29.264474, -202.565682)
 end
