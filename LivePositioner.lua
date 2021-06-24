@@ -7,13 +7,15 @@ LivePositioner = class()
 -- LivePositioner can be initialized with nothing, with just an entity, with an entity plus intial positioning instructions, or any combination thereof
 -- If not given positionings, it supplies default initial values.
 -- Position instructions must be in the format created by LivePositioner:rangeTable(...)
-function LivePositioner:init(firstThing, modelSets, modelSetNames)
+function LivePositioner:init(firstThing, modelSets, modelSetNames, scene)
+    self.scene = scene
     self.currentEntityIndex = 1    
     self.modelSets = modelSets or {}
     self.modelSetNames = modelSetNames or {}
     self.currentSetIndex = 1
     self.currentModelIndex = 1
     self.highlightMultiplier = 9
+    self.selecter = SelectInator(modelSets, scene)
     self:changeSubject(firstThing)
 end
 

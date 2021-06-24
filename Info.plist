@@ -24,7 +24,9 @@
 		<string>TeenyBoat</string>
 	</array>
 	<key>Dependencies</key>
-	<array/>
+	<array>
+		<string>Active-ish:SelectInator</string>
+	</array>
 	<key>Description</key>
 	<string>No description available</string>
 </dict>

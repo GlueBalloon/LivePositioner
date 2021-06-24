@@ -31,7 +31,7 @@ function setup()
     local packs = {characters, nature, castles, space, primitive, racing, watercraft}
     local packNames = {"Blocky_Characters", "Nature", "CastleKit", "SpaceKit", "Primitives", "RacingKit", "Watercraft"}
     
-    livePositioner = LivePositioner(firstEntity, packs, packNames)
+    livePositioner = LivePositioner(firstEntity, packs, packNames, scene)
     livePositioner:setUpBloomingEnvironment()
     livePositioner:setUpParametersWithMicroSettingOf(false)
     
