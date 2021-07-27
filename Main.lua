@@ -34,6 +34,7 @@ function setup()
     livePositioner = LivePositioner(firstEntity, packs, packNames, scene)
     livePositioner:setUpBloomingEnvironment()
     livePositioner:setUpParametersWithMicroSettingOf(false)
+    livePositioner:loadSavedScene()
     
     if restoreCameraSettings then
         restoreCameraSettings()

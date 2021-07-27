@@ -15,7 +15,6 @@ function LivePositioner:init(firstThing, modelSets, modelSetNames, scene)
     self.currentSetIndex = 1
     self.currentModelIndex = 1
     self.highlightMultiplier = 9
-    self.selecter = SelectInator(modelSets, scene)
     self:changeSubject(firstThing)
 end
 
